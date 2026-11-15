@@ -1,0 +1,1443 @@
+---
+title: "Axes Interpretation"
+author: "Hiromichi Hagihara"
+date: "2026-04-18"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(lsa)
+library(stringr)
+library(readr)
+library(ggrepel)
+library(GGally)
+
+rm(list = ls())
+
+# 24 categories
+cat1_levels <- c(
+  "sounds", "animals", "vehicles", "toys", "food_drink", "clothing",
+  "body_parts", "household", "furniture_rooms", "outside", "places",
+  "people", "games_routines", "action_words", "descriptive_words",
+  "time_words", "pronouns", "question_words", "directions",
+  "quantifiers", "classifiers", "final_particles", 
+  "helping_verbs", "connecting_words")
+
+cat1_labels <- c(
+  sounds = "sounds",
+  animals = "animals",
+  vehicles = "vehicles",
+  toys = "toys",
+  food_drink = "food & drink",
+  clothing = "clothing",
+  body_parts = "body\nparts",
+  household = "household",
+  furniture_rooms = "furniture\n& rooms",
+  outside = "outside",
+  places = "places",
+  people = "people",
+  games_routines = "games\n& routines",
+  action_words = "action words",
+  descriptive_words = "descriptive\nwords",
+  time_words = "time",
+  pronouns = "pron.",
+  question_words = "quest.",
+  directions = "direct.",
+  quantifiers = "quant.",
+  classifiers = "class.",
+  final_particles = "fin.",
+  helping_verbs = "help.",
+  connecting_words = "conn.")
+
+cat2_levels <- c("nouns", "verbs", "adjectives", "function_words", "other")
+
+cols <- c(
+  nouns = "#2C7BB6",
+  verbs = "#1A9850",
+  adjectives = "#D95F02",
+  function_words = "#8FBFB0",
+  other = "#9E9AC8")
+
+dir.create(here("Figures", "MA_VoA"), recursive = TRUE, showWarnings = FALSE)
+dir.create(here("Figures", "MA_LR_by_VoA"), recursive = TRUE, showWarnings = FALSE)
+dir.create(here("Figures", "MA_LR_by_itemID"), recursive = TRUE, showWarnings = FALSE)
+dir.create(here("Figures", "MA_BF_by_itemID"), recursive = TRUE, showWarnings = FALSE)
+dir.create(here("Figures", "MA_BF_by_itemID2"), recursive = TRUE, showWarnings = FALSE)
+dir.create(here("Figures", "MA_BF_by_VoA"), recursive = TRUE, showWarnings = FALSE)
+```
+
+
+
+# Mandarin Chinese
+
+```{r}
+target_dir <- here("Data_vaesampled_2025Dec19", "ZCDI_seedfixed", "Mandarin")
+
+d.center <- read_csv(here(target_dir, "ZCDIcenterMandarin.csv")) %>% mutate(pTot = round(as.numeric(pTot), 1))
+d.back   <- read_csv(here(target_dir, "ZCDIoutMandarin.csv")) %>% mutate(pTot = round(as.numeric(pTot), 1))
+d.front  <- read_csv(here(target_dir, "ZCDIinMandarin.csv")) %>% mutate(pTot = round(as.numeric(pTot), 1))
+d.left   <- read_csv(here(target_dir, "ZCDIleftMandarin.csv")) %>% mutate(pTot = round(as.numeric(pTot), 1))
+d.right  <- read_csv(here(target_dir, "ZCDIrightMandarin.csv")) %>% mutate(pTot = round(as.numeric(pTot), 1))
+
+# d.item <- read_csv(here("Data_vaesampled_2025Dec19", "Mandarin_WS_Items.csv"), locale = locale(encoding = "UTF-8"))
+d.item <- read_csv(here("Data_vaesampled_2025Dec19", "Mandarin_WS_Items_with_VoA.csv"), locale = locale(encoding = "UTF-8")) # If you already have this file
+```
+
+
+
+## Calculate VoA (reference: d.center)
+
+```{r}
+d.center.long <- d.center %>% pivot_longer(starts_with("item_"), names_to = "item_id", values_to = "prob") %>% 
+  mutate(item_num = parse_number(item_id))
+```
+
+
+```{r}
+# Example
+
+target_item <- 14
+
+dat <- d.center.long %>% filter(item_num == target_item) %>% 
+  left_join(d.item, by="item_id")
+
+fit <- nls(prob ~ 1 / (1 + exp(-(b + a * pTot))),  # logistic nls fit
+  # data = dat,
+  data = dat %>% bind_rows(tibble(pTot = rep(0, 30), prob = rep(0, 30))),
+  # add dummy data (0, 0) * 30 times to consider the assumption ("total vocab = 0" means "each word's prob = 0") 
+  algorithm = "port",
+  start = list(b = -5, a = 10),
+  control = nls.control(maxiter = 200))
+# summary(fit)
+
+pars <- coef(fit)
+a <- pars["a"]
+b <- pars["b"]
+
+VoA <- -b / a          # pTot at prob = 0.5
+slope_at_05 <- a / 4   # slope at prob = 0.5
+
+newdat <- tibble(pTot = seq(0.0, 1.0, length.out = 200))
+newdat$pred <- predict(fit, newdata = newdat)
+
+ggplot(dat, aes(pTot, prob)) +
+  geom_jitter(width = 0.005, alpha = .3, size = 1) +
+  geom_line(data = newdat, aes(y = pred), linewidth = 1.5, colour = "#2C7BB6") +
+  geom_vline(xintercept = VoA, linetype = "dashed", colour = "red", linewidth = 0.7) +
+  geom_hline(yintercept = 0.5, linetype = "dotted", color="gray20", linewidth = 0.7) +
+  scale_x_continuous(limits=c(0,1), breaks = seq(0,1,0.2)) +
+  scale_y_continuous(limits=c(0,1), breaks = seq(0,1,0.25)) +
+  labs(
+    title = paste0("item_", target_item, ": ", first(dat$item_definition), "(", first(dat$english_gloss), ")"),
+    subtitle = paste0("VoA = ", round(VoA,3), ", AoA = ", first(dat$AoA)),
+    x = "Total vocabulary size (prop)",
+    y = "Probability") +
+  theme_bw(base_size = 13)
+
+ggsave(here("Figures", "MA_VoA", paste0("MA_itemID_", sprintf("%03d", target_item), ".png")), width = 5, height = 4, dpi = 300)
+
+d.out <- data.frame(
+  item_num = target_item,
+  VoA_raw = VoA,
+  slope_at_05_raw = slope_at_05) %>% 
+  mutate(VoA = case_when(VoA_raw < 0.05 ~ 0.05, VoA_raw > 0.95 ~ 0.95, TRUE ~ VoA_raw),
+         VoA_status = case_when(VoA_raw < 0.05 ~ "early", VoA_raw > 0.95 ~ "late", TRUE ~ "observed"),
+         slope_at_05 = if_else(VoA_status == "observed", slope_at_05_raw, NA_real_))
+```
+
+```{r}
+item_list <- sort(unique(d.center.long$item_num))
+d.out <- data.frame()
+
+for (target_item in item_list) {
+  
+  dat <- d.center.long %>% filter(item_num == target_item) %>% 
+    left_join(d.item, by="item_id")
+  
+  fit <- tryCatch(
+    nls(prob ~ 1 / (1 + exp(-(b + a * pTot))),
+        # data = dat
+        data = dat %>% bind_rows(tibble(pTot = rep(0, 30), prob = rep(0, 30))),  
+        # add dummy data (0, 0) * 30 times to consider the assumption ("total vocab = 0" means "each word's prob = 0") 
+        algorithm = "port",
+        start = list(b = -5, a = 10),
+        control = nls.control(maxiter = 200)),
+    error = function(e) NULL)
+  
+  if (is.null(fit)) {
+    
+    d.tmp <- data.frame(
+      item_num = target_item,
+      VoA_raw = NA_real_,
+      slope_at_05_raw = NA_real_,
+      VoA = NA_real_,
+      VoA_status = "failed",
+      slope_at_05 = NA_real_)
+    
+    d.out <- bind_rows(d.out, d.tmp)
+    next
+  }
+  
+  pars <- coef(fit)
+  a <- pars["a"]
+  b <- pars["b"]
+  
+  VoA <- -b / a
+  slope_at_05 <- a / 4
+  
+  newdat <- tibble(pTot = seq(0.0, 1.0, length.out = 200))
+  newdat$pred <- predict(fit, newdata = newdat)
+  
+  p <- ggplot(dat, aes(pTot, prob)) +
+    geom_jitter(width = 0.005, alpha = .3, size = 1) +
+    geom_line(data = newdat, aes(y = pred), linewidth = 1.5, colour = "#2C7BB6") +
+    geom_vline(xintercept = VoA, linetype = "dashed", colour = "red", linewidth = 0.7) +
+    geom_hline(yintercept = 0.5, linetype = "dotted", color = "gray20", linewidth = 0.7) +
+    scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.25)) +
+    labs(
+      title = paste0("item_", target_item, ": ", first(dat$item_definition), "(", first(dat$english_gloss), ")"),
+      subtitle = paste0("VoA = ", round(VoA, 3), ", AoA = ", first(dat$AoA)),
+      x = "Total vocabulary size (prop)",
+      y = "Probability") +
+    theme_bw(base_size = 13)
+  
+  ggsave(here("Figures", "MA_VoA", paste0("MA_itemID_", sprintf("%03d", target_item), ".png")),
+    plot = p, width = 5, height = 4, dpi = 300)
+  
+  d.tmp <- data.frame(
+    item_num = target_item,
+    VoA_raw = VoA,
+    slope_at_05_raw = slope_at_05) %>%
+    mutate(
+      VoA = case_when(VoA_raw < 0.05 ~ 0.05, VoA_raw > 0.95 ~ 0.95, TRUE ~ VoA_raw),
+      VoA_status = case_when(VoA_raw < 0.05 ~ "early", VoA_raw > 0.95 ~ "late", TRUE ~ "observed"),
+      slope_at_05 = if_else(VoA_status == "observed", slope_at_05_raw, NA_real_))
+  
+  d.out <- bind_rows(d.out, d.tmp)
+}
+
+d.item <- d.item %>% mutate(item_num = parse_number(item_id)) %>% left_join(d.out, by="item_num") %>% 
+  select(-item_num)
+write.csv(d.item, here("Data_vaesampled_2025Dec19", "Mandarin_WS_Items_with_VoA.csv"))
+
+d.item <- read_csv(here("Data_vaesampled_2025Dec19", "Mandarin_WS_Items_with_VoA.csv"), locale = locale(encoding = "UTF-8"))
+```
+
+```{r}
+d.item %>% group_by(VoA_status) %>% summarize(n.item = n(), prop = n.item/nrow(d.item))
+
+cor.test(d.item$AoA, d.item$VoA_raw)
+
+d.item %>% ggplot(aes(x=AoA, y=VoA_raw)) +
+  geom_point() +
+  geom_smooth(method="gam", se=TRUE, linewidth = 1.5, colour = "#2C7BB6") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+  labs(title = "AoA and VoA", 
+      y = "VoA: total vocabulary size of acquisition (prop)",
+      x = "AoA: age of acquisition (month)") +
+    theme_bw(base_size = 13)
+
+ggsave(here("Figures", "MA_00_VoA_and_AoA.png"), width = 5, height = 5, dpi = 300)
+
+d.item %>% select(AoA, VoA_raw, slope_at_05_raw) %>% ggpairs()
+```
+
+
+
+## Left-Right axis
+
+### By item
+
+```{r}
+d.left.long <- d.left %>% pivot_longer(starts_with("item_"), names_to = "item_id", values_to = "prob")
+d.right.long <- d.right %>% pivot_longer(starts_with("item_"), names_to = "item_id", values_to = "prob")
+
+left.summary <- d.left.long %>% group_by(pTot, item_id) %>%
+  summarize(mean_1 = mean(prob), var_1 = var(prob), .groups = "drop")
+right.summary <- d.right.long %>% group_by(pTot, item_id) %>%
+  summarize(mean_2 = mean(prob), var_2 = var(prob), .groups = "drop")
+
+diff.summary <- left.summary %>% left_join(right.summary, by=c("pTot", "item_id")) %>%
+  mutate(mean_diff = mean_1 - mean_2, 
+         sd_diff   = sqrt(var_1 + var_2)) %>%
+  left_join(d.item, by = c("item_id"))
+```
+
+```{r}
+# Visualization, example 1
+
+target_pTot <- 0.5
+
+plot.dat <- diff.summary %>%
+  filter(pTot == target_pTot) %>%
+  mutate(
+    category1 = factor(category1, levels = cat1_levels),
+    category2 = factor(category2, levels = cat2_levels),
+    item_num = parse_number(item_id)) %>%
+  # arrange(category1, item_num) %>%                    # if you want to arrange items by item_id
+  arrange(category1, is.na(VoA_raw), VoA_raw, item_num) %>%   # if you want to arrange items by VoA
+  mutate(
+    x = row_number(),
+    ymin = mean_diff - sd_diff,
+    ymax = mean_diff + sd_diff)
+
+cat.pos <- plot.dat %>%
+  group_by(category1) %>%
+  summarise(
+    xmin = min(x),
+    xmax = max(x),
+    xmid = (xmin + xmax) / 2,
+    .groups = "drop") %>%
+  mutate(
+    cat_label = cat1_labels[as.character(category1)],
+    band_id = row_number())
+
+vline.dat <- cat.pos %>% slice(-n())
+
+
+ggplot(plot.dat, aes(x = x, y = mean_diff, color = category2)) +
+  geom_rect(
+    data = cat.pos,
+    aes(
+      xmin = xmin - 0.5,
+      xmax = xmax + 0.5,
+      ymin = -Inf,
+      ymax = Inf,
+      fill = factor(band_id %% 2)),
+    inherit.aes = FALSE,
+    alpha = 0.06,
+    colour = NA,
+    show.legend = FALSE) +
+  scale_fill_manual(values = c("0" = "grey70", "1" = "white")) +
+  geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.4) +
+  geom_linerange(
+    aes(ymin = ymin, ymax = ymax),
+    alpha = 0.22, linewidth = 0.35) +
+  geom_segment(
+    aes(xend = x, y = 0, yend = mean_diff),
+    alpha = 0.25, linewidth = 0.3) +
+  geom_point(size = 1.1, alpha = 0.9) +
+  geom_vline(
+    data = vline.dat,
+    aes(xintercept = xmax + 0.5),
+    linetype = "dashed",
+    colour = "grey75",
+    linewidth = 0.4) +
+  geom_text(
+    data = cat.pos,
+    aes(x = xmid, y = 0.85, label = cat_label),
+    inherit.aes = FALSE,
+    vjust = 1,
+    size = 2.6,
+    lineheight = 0.9,
+    colour = "grey10") +
+  scale_color_manual(values = cols, drop = FALSE) +
+  scale_x_continuous(
+    breaks = plot.dat$x[seq(1, nrow(plot.dat), by = 20)],
+    labels = plot.dat$item_id[seq(1, nrow(plot.dat), by = 20)],
+    expand = expansion(mult = c(0.005, 0.005))) +
+  scale_y_continuous(
+      limits = c(-0.94, 0.94),
+      breaks = seq(-1, 1, by = 0.2)) +
+  labs(
+    x = "Item",
+    y = expression(Delta*"Production probability (Left - Right)"),
+    title = paste0("Total vocabulary size (prop) = ", target_pTot),
+    colour = NULL) +
+  coord_cartesian(clip = "off") +
+  theme_bw(base_size = 13) +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 7),
+    plot.title = element_text(face = "bold"),
+    legend.position = "top",
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10))
+
+ggsave(here("Figures", "MA_LR_by_itemID", paste0("MA_01_Diff_LR_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+# ggsave(here("Figures", "MA_LR_by_VoA", paste0("MA_01_Diff_LR_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+```
+
+```{r}
+plot_diff_by_item_pTot <- function(target_pTot, diff_df) {
+  
+  plot.dat <- diff.summary %>%
+  filter(pTot == target_pTot) %>%
+  mutate(
+    category1 = factor(category1, levels = cat1_levels),
+    category2 = factor(category2, levels = cat2_levels),
+    item_num = parse_number(item_id)) %>%
+  # arrange(category1, item_num) %>%                    # if you want to arrange items by item_id
+  arrange(category1, is.na(VoA_raw), VoA_raw, item_num) %>%   # if you want to arrange items by VoA
+  mutate(
+    x = row_number(),
+    ymin = mean_diff - sd_diff,
+    ymax = mean_diff + sd_diff)
+  
+  cat.pos <- plot.dat %>%
+    group_by(category1) %>%
+    summarise(
+      xmin = min(x),
+      xmax = max(x),
+      xmid = (xmin + xmax) / 2,
+      .groups = "drop") %>%
+    mutate(
+      cat_label = cat1_labels[as.character(category1)],
+      band_id = row_number())
+  
+  vline.dat <- cat.pos %>% slice(-n())
+
+  ggplot(plot.dat, aes(x = x, y = mean_diff, color = category2)) +
+    geom_rect(
+      data = cat.pos,
+      aes(
+        xmin = xmin - 0.5,
+        xmax = xmax + 0.5,
+        ymin = -Inf,
+        ymax = Inf,
+        fill = factor(band_id %% 2)),
+      inherit.aes = FALSE,
+      alpha = 0.06,
+      colour = NA,
+      show.legend = FALSE) +
+    scale_fill_manual(values = c("0" = "grey70", "1" = "white")) +
+    geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.4) +
+    geom_linerange(
+      aes(ymin = ymin, ymax = ymax),
+      alpha = 0.22, linewidth = 0.35) +
+    geom_segment(
+      aes(xend = x, y = 0, yend = mean_diff),
+      alpha = 0.25, linewidth = 0.3) +
+    geom_point(size = 1.1, alpha = 0.9) +
+    geom_vline(
+      data = vline.dat,
+      aes(xintercept = xmax + 0.5),
+      linetype = "dashed",
+      colour = "grey75",
+      linewidth = 0.4) +
+    geom_text(
+      data = cat.pos,
+      aes(x = xmid, y = 0.85, label = cat_label),
+      inherit.aes = FALSE,
+      vjust = 1,
+      size = 2.6,
+      lineheight = 0.9,
+      colour = "grey10") +
+    scale_color_manual(values = cols, drop = FALSE) +
+    scale_x_continuous(
+      breaks = plot.dat$x[seq(1, nrow(plot.dat), by = 20)],
+      labels = plot.dat$item_id[seq(1, nrow(plot.dat), by = 20)],
+      expand = expansion(mult = c(0.005, 0.005))) +
+    scale_y_continuous(
+        limits = c(-0.94, 0.94),
+        breaks = seq(-1, 1, by = 0.2)) +
+    labs(
+      x = "Item",
+      y = expression(Delta*"Production probability (Left - Right)"),
+      title = paste0("Total vocabulary size (prop) = ", target_pTot),
+      colour = NULL) +
+    coord_cartesian(clip = "off") +
+    theme_bw(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 7),
+      plot.title = element_text(face = "bold"),
+      legend.position = "top",
+      plot.margin = margin(t = 10, r = 10, b = 10, l = 10))
+  
+  ggsave(here("Figures", "MA_LR_by_VoA", paste0("MA_01_Diff_LR_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+}
+```
+
+```{r}
+for (p in seq(0.1, 0.3, by = 0.1)){
+  plot_diff_by_item_pTot(p, diff.summary)
+}
+```
+
+
+
+### By category
+
+```{r}
+diff.cat.summary <- diff.summary %>%
+  mutate(
+    pTot = round(as.numeric(pTot), 1),
+    category1 = factor(category1, levels = cat1_levels),
+    category2 = factor(category2, levels = c("nouns", "verbs", "adjectives", "function_words", "other"))) %>%
+  group_by(pTot, category1, category2) %>%
+  summarize(
+    mean_diff_m = mean(mean_diff, na.rm = TRUE),
+    mean_diff_sd = sd(mean_diff, na.rm = TRUE),
+    n = sum(!is.na(mean_diff)),
+    mean_diff_se = mean_diff_sd / sqrt(n),
+    .groups = "drop")
+
+cat2_summary <- diff.summary %>%
+  mutate(
+    pTot = round(as.numeric(pTot), 1),
+    category2 = factor(category2, levels = c("nouns", "verbs", "adjectives", "function_words", "other"))) %>%
+  group_by(pTot, category2) %>%
+  summarise(
+    mean_diff_m = mean(mean_diff, na.rm = TRUE),
+    mean_diff_sd = sd(mean_diff, na.rm = TRUE),
+    n = sum(!is.na(mean_diff)),
+    mean_diff_se = mean_diff_sd / sqrt(n),
+    .groups = "drop")
+
+label_dat <- diff.cat.summary %>%
+  group_by(category1, category2) %>%
+  filter(pTot == max(pTot)) %>%
+  ungroup() %>%
+  arrange(mean_diff_m) %>%
+  mutate(
+    y_lab = case_when(
+        category1 == "toys" ~ mean_diff_m + 0.03,
+        category1 == "outside" ~ mean_diff_m + 0.03,
+        TRUE ~ mean_diff_m))
+
+ggplot(diff.cat.summary, aes(x = pTot, y = mean_diff_m, group = category1, color = category2)) +
+  geom_hline(yintercept = 0, colour = "grey20", linewidth = 1.0) +
+  geom_line(linewidth = 0.7, alpha = 0.15) +
+  geom_ribbon(
+    data = cat2_summary,
+    aes(
+      x = pTot,
+      ymin = mean_diff_m - mean_diff_se,
+      ymax = mean_diff_m + mean_diff_se,
+      fill = category2,
+      group = category2),
+    inherit.aes = FALSE,
+    alpha = 0.10,
+    colour = NA,
+    show.legend = FALSE) +
+  geom_line(
+    data = cat2_summary,
+    aes(x = pTot, y = mean_diff_m, group = category2, colour = category2),
+    inherit.aes = FALSE,
+    linewidth = 2.4,
+    alpha = 0.98,
+    show.legend = FALSE) +
+  geom_point(
+    data = cat2_summary,
+    aes(x = pTot, y = mean_diff_m, colour = category2),
+    inherit.aes = FALSE,
+    size = 3.5,
+    show.legend = FALSE) +
+  geom_text_repel(
+    data = label_dat,
+    aes(y = y_lab, label = category1),
+    direction = "y",
+    hjust = 0,
+    nudge_x = 0.035,
+    size = 3.1,
+    segment.color = "grey75",
+    segment.alpha = 0.7,
+    segment.size = 0.3,
+    box.padding = 0.18,
+    point.padding = 0.12,
+    min.segment.length = 0,
+    max.overlaps = Inf,
+    seed = 123,
+    show.legend = FALSE) +
+  scale_colour_manual(values = cols, drop = FALSE) +
+  scale_fill_manual(values = cols, drop = FALSE) +
+  scale_x_continuous(
+    breaks = seq(0.1, 0.9, by = 0.1),
+    limits = c(0.1, 0.98)) +
+  coord_cartesian(xlim = c(0.1, 1.02), ylim = c(-0.7, 0.6), clip = "off") +
+  labs(
+    x = "Total vocabulary size (prop)",
+    y = expression(Delta*"Production probability (Left - Right)"),
+    colour = "Lexical category") +
+  theme_bw(base_size = 13) +
+  theme(
+    legend.position = "right",
+    panel.grid.minor = element_blank()) +
+  guides(
+    color = guide_legend(
+      override.aes = list(linewidth = 2.4, alpha = 1, size = 3.5)))
+
+ggsave(here("Figures", "MA_02_Diff_LR_Cat.png"), width = 12, height = 6, dpi = 300)
+```
+
+
+
+### Noun-verb differences across samples
+
+```{r}
+item_key <- d.item %>% 
+  transmute(item_id = item_id, category2) %>%
+  filter(category2 %in% c("nouns", "verbs"))
+
+calc_nv_index <- function(df, position_name) {
+  df %>%
+    mutate(
+      sample_id = row_number(),
+      pTot = round(as.numeric(pTot), 1)) %>%
+    pivot_longer(
+      cols = starts_with("item_"),
+      names_to = "item_id",
+      values_to = "prob") %>%
+    inner_join(item_key, by = "item_id") %>%
+    group_by(sample_id, pTot, category2) %>%
+    summarise(
+      cat_mean = mean(prob, na.rm = TRUE),
+      .groups = "drop") %>%
+    tidyr::pivot_wider(
+      names_from = category2,
+      values_from = cat_mean) %>%
+    mutate(
+      nv_diff = nouns - verbs,
+      nv_ratio = nouns / verbs,
+      nv_logratio = log((nouns + 0.001) / (verbs + 0.001)),
+      position = position_name)
+}
+```
+
+```{r}
+nv.indiv <- bind_rows(
+  calc_nv_index(d.left, "left"),
+  calc_nv_index(d.right, "right"),
+  calc_nv_index(d.center, "center"))
+
+nv.summary <- nv.indiv %>%
+  group_by(position, pTot) %>%
+  summarize(
+    mean_nv = mean(nv_diff, na.rm = TRUE),
+    sd_nv = sd(nv_diff, na.rm = TRUE),
+    # if interested in ratio:
+    # mean_nv = mean(nv_logratio, na.rm = TRUE),
+    # sd_nv = sd(nv_logratio, na.rm = TRUE),
+    n = sum(!is.na(nv_diff)),
+    se_nv = sd_nv / sqrt(n),
+    .groups = "drop") %>% 
+  mutate(position = factor(position, levels = c("left", "center", "right")))
+
+cols_pos <- c(
+  left = "#2C7BB6",
+  center = "#7B6FD0",
+  right = "#1A9850")
+
+ggplot(nv.summary, aes(x = pTot, y = mean_nv, colour = position, group = position)) +
+  geom_hline(yintercept = 0, colour = "grey25", linewidth = 0.9) +
+  geom_ribbon(
+    aes(ymin = mean_nv - se_nv, ymax = mean_nv + se_nv, fill = position),
+    alpha = 0.22,
+    colour = NA,
+    show.legend = FALSE) +
+  geom_line(linewidth = 1.3) +
+  geom_point(size = 2.8, show.legend = FALSE) +
+  scale_colour_manual(values = cols_pos) +
+  scale_fill_manual(values = cols_pos) +
+  scale_x_continuous(breaks = seq(0.1, 0.9, by = 0.1)) +
+  scale_y_continuous(
+    breaks = seq(-0.4, 0.4, by = 0.1),
+    limits = c(-0.45, 0.35)) +
+  labs(
+    x = "Total vocabulary size (prop)",
+    y = "Mean production probability of nouns − verbs",
+    colour = "Position",
+    fill = "Position") +
+  theme_bw(base_size = 13) +
+  theme(
+    legend.position = "right",
+    panel.grid.minor = element_blank(),
+    legend.title = element_text(face = "bold"))
+
+ggsave(here("Figures", "MA_03_Diff_LRC_NVdiff.png"), width = 12, height = 6, dpi = 300)
+
+
+nv.summary.phase <- nv.indiv %>%
+  mutate(
+    phase = case_when(
+      pTot <= 0.3 ~ "0.1–0.3",
+      pTot <= 0.6 ~ "0.4–0.6",
+      TRUE         ~ "0.7–0.9"),
+    phase = factor(phase, 
+                   levels = c("0.1–0.3", "0.4–0.6", "0.7–0.9")),
+                   # labels = c("Early\n(0.1–0.3)", "Middle\n(0.4–0.6)", "Late\n(0.7–0.9)")),
+    position = factor(position, levels = c("left", "center", "right"))) %>%
+  group_by(position, phase) %>%
+  summarize(
+    mean_nv = mean(nv_diff, na.rm = TRUE),
+    sd_nv = sd(nv_diff, na.rm = TRUE),
+    n = sum(!is.na(nv_diff)),
+    se_nv = sd_nv / sqrt(n),
+    .groups = "drop")
+
+ggplot(nv.summary.phase, aes(x = phase, y = mean_nv, colour = position, group = position)) +
+  geom_hline(yintercept = 0, colour = "grey25", linewidth = 0.9) +
+  geom_line(linewidth = 1.3) +
+  geom_errorbar(aes(ymin = mean_nv - se_nv, ymax = mean_nv + se_nv),
+    width = 0.08, linewidth = 0.6, show.legend = FALSE) +
+  geom_point(size = 2.8) +
+  scale_colour_manual(values = cols_pos, labels = c(left = "Left", center = "Center", right = "Right")) +
+  scale_y_continuous(breaks = seq(-0.4, 0.45, by = 0.1), limits = c(-0.42, 0.2)) +
+  labs(
+    x = "Total vocabulary size (prop)",
+    y = "Mean production probability\n of nouns - verbs",
+    colour = "Position") +
+  theme_bw(base_size = 13) +
+  guides(colour = guide_legend(nrow = 1, byrow = TRUE, title.position = "top", title.hjust = 0)) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text.x = element_text(angle = 40, hjust = 1),
+    legend.position = "top",
+    legend.justification = "left",
+    legend.box.just = "left",
+    legend.margin = margin(t = 0, r = 0, b = 4, l = 0),
+    legend.box.spacing = unit(0, "pt"),
+    legend.title = element_text(face = "bold"))
+
+ggsave(here("Figures", "MA_03_Diff_LRC_NVdiff_2.png"), width = 3.1, height = 6, dpi = 300)
+```
+
+
+
+## Back-Front axis
+
+### By item
+
+```{r}
+d.back.long <- d.back %>% pivot_longer(starts_with("item_"), names_to = "item_id", values_to = "prob")
+d.front.long <- d.front %>% pivot_longer(starts_with("item_"), names_to = "item_id", values_to = "prob")
+
+back.summary <- d.back.long %>% group_by(pTot, item_id) %>%
+  summarize(mean_1 = mean(prob), var_1 = var(prob), .groups = "drop")
+front.summary <- d.front.long %>% group_by(pTot, item_id) %>%
+  summarize(mean_2 = mean(prob), var_2 = var(prob), .groups = "drop")
+
+diff.summary <- front.summary %>% left_join(back.summary, by=c("pTot", "item_id")) %>%
+  mutate(mean_diff = mean_1 - mean_2, 
+         sd_diff   = sqrt(var_1 + var_2)) %>%
+  left_join(d.item, by = c("item_id"))
+```
+
+```{r}
+# Visualization, example 1
+
+target_pTot <- 0.5
+
+plot.dat <- diff.summary %>%
+  filter(pTot == target_pTot) %>%
+  mutate(
+    category1 = factor(category1, levels = cat1_levels),
+    category2 = factor(category2, levels = cat2_levels),
+    item_num = parse_number(item_id)) %>%
+  arrange(category1, item_num) %>%                    # if you want to arrange items by item_id
+  # arrange(category1, is.na(VoA_raw), VoA_raw, item_num) %>%   # if you want to arrange items by VoA
+  mutate(
+    x = row_number(),
+    ymin = mean_diff - sd_diff,
+    ymax = mean_diff + sd_diff)
+
+cat.pos <- plot.dat %>%
+  group_by(category1) %>%
+  summarise(
+    xmin = min(x),
+    xmax = max(x),
+    xmid = (xmin + xmax) / 2,
+    .groups = "drop") %>%
+  mutate(
+    cat_label = cat1_labels[as.character(category1)],
+    band_id = row_number())
+
+vline.dat <- cat.pos %>% slice(-n())
+
+target_vline.dat <- plot.dat %>%
+  filter(!is.na(VoA_raw)) %>%
+  group_by(category1) %>%
+  summarise(
+    xintercept = {
+      before <- x[VoA_raw <= target_pTot]
+      after  <- x[VoA_raw >  target_pTot]
+      if (length(before) > 0 && length(after) > 0) {
+        max(before) + 0.5
+      } else {
+        NA_real_
+      }
+    },
+    .groups = "drop") %>%
+  filter(!is.na(xintercept))
+    
+ggplot(plot.dat, aes(x = x, y = mean_diff, color = category2)) +
+  geom_rect(
+    data = cat.pos,
+    aes(
+      xmin = xmin - 0.5,
+      xmax = xmax + 0.5,
+      ymin = -Inf,
+      ymax = Inf,
+      fill = factor(band_id %% 2)),
+    inherit.aes = FALSE,
+    alpha = 0.06,
+    colour = NA,
+    show.legend = FALSE) +
+  scale_fill_manual(values = c("0" = "grey70", "1" = "white")) +
+  geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.4) +
+  geom_linerange(
+    aes(ymin = ymin, ymax = ymax),
+    alpha = 0.22, linewidth = 0.35) +
+  geom_segment(
+    aes(xend = x, y = 0, yend = mean_diff),
+    alpha = 0.25, linewidth = 0.3) +
+  geom_point(size = 1.1, alpha = 0.9) +
+  geom_vline(
+    data = vline.dat,
+    aes(xintercept = xmax + 0.5),
+    linetype = "dashed",
+    colour = "grey75",
+    linewidth = 0.4) +
+  # geom_vline(                        # comment out this section if you arrange items by item_id
+  #   data = target_vline.dat,
+  #   aes(xintercept = xintercept),
+  #   inherit.aes = FALSE,
+  #   linetype = "solid",
+  #   colour = "#D73027",
+  #   linewidth = 0.5,
+  #   alpha = 0.3) +
+  geom_text(
+    data = cat.pos,
+    aes(x = xmid, y = 0.85, label = cat_label),
+    inherit.aes = FALSE,
+    vjust = 1,
+    size = 2.6,
+    lineheight = 0.9,
+    colour = "grey10") +
+  scale_color_manual(values = cols, drop = FALSE) +
+  scale_x_continuous(
+    breaks = plot.dat$x[seq(1, nrow(plot.dat), by = 20)],
+    labels = plot.dat$item_id[seq(1, nrow(plot.dat), by = 20)],
+    expand = expansion(mult = c(0.005, 0.005))) +
+  scale_y_continuous(
+      limits = c(-0.94, 0.94),
+      breaks = seq(-1, 1, by = 0.2)) +
+  labs(
+    x = "Item",
+    y = expression(Delta*"Production probability (Back - Front)"),
+    title = paste0("Total vocabulary size (prop) = ", target_pTot),
+    colour = NULL) +
+  coord_cartesian(clip = "off") +
+  theme_bw(base_size = 13) +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 7),
+    plot.title = element_text(face = "bold"),
+    legend.position = "top",
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10))
+
+ggsave(here("Figures", "MA_BF_by_itemID", paste0("MA_01_Diff_BF_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+# ggsave(here("Figures", "MA_BF_by_VoA", paste0("MA_01_Diff_BF_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+```
+
+```{r}
+plot_diff_by_item_pTot <- function(target_pTot, diff_df) {
+  
+  plot.dat <- diff.summary %>%
+    filter(pTot == target_pTot) %>%
+    mutate(
+      category1 = factor(category1, levels = cat1_levels),
+      category2 = factor(category2, levels = cat2_levels),
+      item_num = parse_number(item_id)) %>%
+    # arrange(category1, item_num) %>%                    # if you want to arrange items by item_id
+    arrange(category1, is.na(VoA_raw), VoA_raw, item_num) %>%   # if you want to arrange items by VoA
+    mutate(
+      x = row_number(),
+      ymin = mean_diff - sd_diff,
+      ymax = mean_diff + sd_diff)
+  
+  cat.pos <- plot.dat %>%
+    group_by(category1) %>%
+    summarise(
+      xmin = min(x),
+      xmax = max(x),
+      xmid = (xmin + xmax) / 2,
+      .groups = "drop") %>%
+    mutate(
+      cat_label = cat1_labels[as.character(category1)],
+      band_id = row_number())
+  
+  vline.dat <- cat.pos %>% slice(-n())
+  
+  target_vline.dat <- plot.dat %>%
+    filter(!is.na(VoA)) %>%
+    group_by(category1) %>%
+    summarise(
+      xintercept = {
+        before <- x[VoA_raw <= target_pTot]
+        after  <- x[VoA_raw >  target_pTot]
+        if (length(before) > 0 && length(after) > 0) {
+          max(before) + 0.5
+        } else {
+          NA_real_
+        }
+      },
+      .groups = "drop") %>%
+    filter(!is.na(xintercept))
+      
+  ggplot(plot.dat, aes(x = x, y = mean_diff, color = category2)) +
+    geom_rect(
+      data = cat.pos,
+      aes(
+        xmin = xmin - 0.5,
+        xmax = xmax + 0.5,
+        ymin = -Inf,
+        ymax = Inf,
+        fill = factor(band_id %% 2)),
+      inherit.aes = FALSE,
+      alpha = 0.06,
+      colour = NA,
+      show.legend = FALSE) +
+    scale_fill_manual(values = c("0" = "grey70", "1" = "white")) +
+    geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.4) +
+    geom_linerange(
+      aes(ymin = ymin, ymax = ymax),
+      alpha = 0.22, linewidth = 0.35) +
+    geom_segment(
+      aes(xend = x, y = 0, yend = mean_diff),
+      alpha = 0.25, linewidth = 0.3) +
+    geom_point(size = 1.1, alpha = 0.9) +
+    geom_vline(
+      data = vline.dat,
+      aes(xintercept = xmax + 0.5),
+      linetype = "dashed",
+      colour = "grey75",
+      linewidth = 0.4) +
+    geom_vline(                        # comment out this section if you arrange items by item_id
+      data = target_vline.dat,
+      aes(xintercept = xintercept),
+      inherit.aes = FALSE,
+      linetype = "solid",
+      colour = "#D73027",
+      linewidth = 0.5,
+      alpha = 0.3) +
+    geom_text(
+      data = cat.pos,
+      aes(x = xmid, y = 0.85, label = cat_label),
+      inherit.aes = FALSE,
+      vjust = 1,
+      size = 2.6,
+      lineheight = 0.9,
+      colour = "grey10") +
+    scale_color_manual(values = cols, drop = FALSE) +
+    scale_x_continuous(
+      breaks = plot.dat$x[seq(1, nrow(plot.dat), by = 20)],
+      labels = plot.dat$item_id[seq(1, nrow(plot.dat), by = 20)],
+      expand = expansion(mult = c(0.005, 0.005))) +
+    scale_y_continuous(
+        limits = c(-0.94, 0.94),
+        breaks = seq(-1, 1, by = 0.2)) +
+    labs(
+      x = "Item",
+      y = expression(Delta*"Production probability (Back - Front)"),
+      title = paste0("Total vocabulary size (prop) = ", target_pTot),
+      colour = NULL) +
+    coord_cartesian(clip = "off") +
+    theme_bw(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 7),
+      plot.title = element_text(face = "bold"),
+      legend.position = "top",
+      plot.margin = margin(t = 10, r = 10, b = 10, l = 10))
+  
+  # ggsave(here("Figures", "MA_BF_by_itemID", paste0("MA_01_Diff_BF_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+  ggsave(here("Figures", "MA_BF_by_VoA", paste0("MA_01_Diff_BF_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+}
+```
+
+```{r}
+for (p in seq(0.1, 0.3, by = 0.1)){
+  plot_diff_by_item_pTot(p, diff.summary)
+}
+```
+
+
+### By item2 (category collapsed)
+
+```{r}
+# Visualization, example 1
+
+target_pTot <- 0.1
+
+plot.dat <- diff.summary %>%
+  filter(pTot == target_pTot) %>%
+  mutate(
+    category1 = factor(category1, levels = cat1_levels),
+    category2 = factor(category2, levels = cat2_levels),
+    item_num = parse_number(item_id)) %>%
+  arrange(is.na(VoA_raw), VoA_raw, category1, item_num) %>%   # if you want to arrange items by VoA
+  mutate(
+    x = row_number(),
+    ymin = mean_diff - sd_diff,
+    ymax = mean_diff + sd_diff)
+
+target_vline.dat <- plot.dat %>%
+  filter(!is.na(VoA_raw)) %>%
+  summarise(
+    xintercept = {
+      before <- x[VoA_raw <= target_pTot]
+      after  <- x[VoA_raw >  target_pTot]
+      if (length(before) > 0 && length(after) > 0) {
+        max(before) + 0.5
+      } else {
+        NA_real_
+      }
+    },
+    .groups = "drop") %>%
+  filter(!is.na(xintercept))
+    
+ggplot(plot.dat, aes(x = x, y = mean_diff, color = category2)) +
+  geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.4) +
+  geom_linerange(
+    aes(ymin = ymin, ymax = ymax),
+    alpha = 0.22, linewidth = 0.35) +
+  geom_segment(
+    aes(xend = x, y = 0, yend = mean_diff),
+    alpha = 0.25, linewidth = 0.3) +
+  geom_point(size = 1.1, alpha = 0.9) +
+  geom_vline(                        # comment out this section if you arrange items by item_id
+    data = target_vline.dat,
+    aes(xintercept = xintercept),
+    inherit.aes = FALSE,
+    linetype = "solid",
+    colour = "#D73027",
+    linewidth = 0.5,
+    alpha = 0.3) +
+  scale_color_manual(values = cols, drop = FALSE) +
+  scale_x_continuous(
+    breaks = plot.dat$x[seq(1, nrow(plot.dat), by = 20)],
+    labels = plot.dat$item_id[seq(1, nrow(plot.dat), by = 20)],
+    expand = expansion(mult = c(0.005, 0.005))) +
+  scale_y_continuous(
+      limits = c(-0.94, 0.94),
+      breaks = seq(-1, 1, by = 0.2)) +
+  labs(
+    x = "Item",
+    y = expression(Delta*"Production probability (Back - Front)"),
+    title = paste0("Total vocabulary size (prop) = ", target_pTot),
+    colour = NULL) +
+  coord_cartesian(clip = "off") +
+  theme_bw(base_size = 13) +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 7),
+    plot.title = element_text(face = "bold"),
+    legend.position = "top",
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10))
+
+ggsave(here("Figures", "MA_BF_by_itemID2", paste0("MA_01_Diff_BF_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+```
+
+
+```{r}
+plot_diff_by_item_pTot2 <- function(target_pTot, diff_df) {
+  
+  plot.dat <- diff.summary %>%
+    filter(pTot == target_pTot) %>%
+    mutate(
+      category1 = factor(category1, levels = cat1_levels),
+      category2 = factor(category2, levels = cat2_levels),
+      item_num = parse_number(item_id)) %>%
+    arrange(is.na(VoA_raw), VoA_raw, category1, item_num) %>%   # if you want to arrange items by VoA
+    mutate(
+      x = row_number(),
+      ymin = mean_diff - sd_diff,
+      ymax = mean_diff + sd_diff)
+  
+  target_vline.dat <- plot.dat %>%
+    filter(!is.na(VoA_raw)) %>%
+    summarise(
+      xintercept = {
+        before <- x[VoA_raw <= target_pTot]
+        after  <- x[VoA_raw >  target_pTot]
+        if (length(before) > 0 && length(after) > 0) {
+          max(before) + 0.5
+        } else {
+          NA_real_
+        }
+      },
+      .groups = "drop") %>%
+    filter(!is.na(xintercept))
+      
+  ggplot(plot.dat, aes(x = x, y = mean_diff, color = category2)) +
+    geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.4) +
+    geom_linerange(
+      aes(ymin = ymin, ymax = ymax),
+      alpha = 0.22, linewidth = 0.35) +
+    geom_segment(
+      aes(xend = x, y = 0, yend = mean_diff),
+      alpha = 0.25, linewidth = 0.3) +
+    geom_point(size = 1.1, alpha = 0.9) +
+    geom_vline(                        # comment out this section if you arrange items by item_id
+      data = target_vline.dat,
+      aes(xintercept = xintercept),
+      inherit.aes = FALSE,
+      linetype = "solid",
+      colour = "#D73027",
+      linewidth = 0.5,
+      alpha = 0.3) +
+    scale_color_manual(values = cols, drop = FALSE) +
+    scale_x_continuous(
+      breaks = plot.dat$x[seq(1, nrow(plot.dat), by = 20)],
+      labels = plot.dat$item_id[seq(1, nrow(plot.dat), by = 20)],
+      expand = expansion(mult = c(0.005, 0.005))) +
+    scale_y_continuous(
+        limits = c(-0.94, 0.94),
+        breaks = seq(-1, 1, by = 0.2)) +
+    labs(
+      x = "Item",
+      y = expression(Delta*"Production probability (Back - Front)"),
+      title = paste0("Total vocabulary size (prop) = ", target_pTot),
+      colour = NULL) +
+    coord_cartesian(clip = "off") +
+    theme_bw(base_size = 13) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 7),
+      plot.title = element_text(face = "bold"),
+      legend.position = "top",
+      plot.margin = margin(t = 10, r = 10, b = 10, l = 10))
+  
+  ggsave(here("Figures", "MA_BF_by_itemID2", paste0("MA_01_Diff_BF_pTot_", target_pTot, ".png")), width = 18, height = 6, dpi = 300)
+}
+```
+
+```{r}
+for (p in seq(0.1, 0.3, by = 0.1)){
+  plot_diff_by_item_pTot2(p, diff.summary)
+}
+```
+
+
+### By category
+
+```{r}
+bin_width <- 0.1
+
+base.dat <- diff.summary %>%
+  mutate(
+    pTot = round(as.numeric(pTot), 1),
+    rel_VoA = VoA_raw - pTot,
+    category2 = factor(category2, levels = c("nouns", "verbs", "adjectives", "function_words", "other")),
+    pTot_bin = case_when(
+      pTot <= 0.3 ~ "0.1–0.3",
+      pTot <= 0.6 ~ "0.4–0.6",
+      TRUE ~ "0.7–0.9"),
+    pTot_bin = factor(pTot_bin, levels = c("0.1–0.3", "0.4–0.6", "0.7–0.9")),
+    rel_bin_mid = floor(rel_VoA / bin_width) * bin_width + bin_width / 2) %>%
+  filter(!is.na(mean_diff), !is.na(pTot_bin), rel_bin_mid >= -0.85, rel_bin_mid <= 0.85)
+
+bin.dat.all <- base.dat %>%
+  group_by(category2, rel_bin_mid) %>%
+  summarise(
+    mean_diff_m = mean(mean_diff, na.rm = TRUE),
+    mean_diff_sd = sd(mean_diff, na.rm = TRUE),
+    n = sum(!is.na(mean_diff)),
+    mean_diff_se = mean_diff_sd / sqrt(n),
+    .groups = "drop")
+
+bin.dat.all2 <- base.dat %>%
+  group_by(rel_bin_mid) %>%
+  summarise(
+    mean_diff_m = mean(mean_diff, na.rm = TRUE),
+    mean_diff_sd = sd(mean_diff, na.rm = TRUE),
+    n = sum(!is.na(mean_diff)),
+    mean_diff_se = mean_diff_sd / sqrt(n),
+    .groups = "drop")
+
+bin.dat.stage <- base.dat %>%
+  group_by(category2, pTot_bin, rel_bin_mid) %>%
+  summarise(
+    mean_diff_m = mean(mean_diff, na.rm = TRUE),
+    .groups = "drop")
+
+label.dat <- bin.dat.stage %>%
+  filter(category2 == "other") %>%
+  group_by(pTot_bin) %>%
+  filter(rel_bin_mid == max(rel_bin_mid, na.rm = TRUE)) %>%
+  ungroup() %>%
+  arrange(mean_diff_m) %>%
+  mutate(
+    x_lab = 0.93,
+    y_lab = seq(min(mean_diff_m), max(mean_diff_m), length.out = n()))
+
+ggplot() +
+  geom_hline(yintercept = 0, colour = "grey20", linewidth = 1.0) +
+  geom_vline(xintercept = 0, colour = "grey35", linewidth = 0.8, linetype = "dashed") +
+  geom_ribbon(
+    data = bin.dat.all2 %>% mutate(panel = "Overall mean"),
+    aes(x = rel_bin_mid, ymin = mean_diff_m - mean_diff_se, ymax = mean_diff_m + mean_diff_se),
+    fill = "grey45",
+    alpha = 0.7,
+    colour = NA) +
+  geom_line(
+    data = bin.dat.all2 %>% mutate(panel = "Overall mean"),
+    aes(x = rel_bin_mid, y = mean_diff_m),
+    colour = "grey30",
+    linewidth = 2.4,
+    alpha = 0.98) +
+  geom_point(
+    data = bin.dat.all2 %>% mutate(panel = "Overall mean"),
+    aes(x = rel_bin_mid, y = mean_diff_m),
+    colour = "grey30",
+    size = 3.0) +
+  geom_ribbon(
+    data = bin.dat.all %>% mutate(panel = "By lexical category"),
+    aes(x = rel_bin_mid, ymin = mean_diff_m - mean_diff_se, ymax = mean_diff_m + mean_diff_se, fill = category2),
+    alpha = 0.10,
+    colour = NA,
+    show.legend = FALSE) +
+  geom_line(
+    data = bin.dat.all %>% mutate(panel = "By lexical category"),
+    aes(x = rel_bin_mid, y = mean_diff_m, colour = category2),
+    linewidth = 2.4,
+    alpha = 0.98,
+    show.legend = TRUE) +
+  geom_point(
+    data = bin.dat.all %>% mutate(panel = "By lexical category"),
+    aes(x = rel_bin_mid, y = mean_diff_m, colour = category2),
+    size = 3.0,
+    show.legend = FALSE) +
+  facet_wrap(
+    ~ factor(panel, levels = c("Overall mean", "By lexical category")),
+    nrow = 1) +
+  scale_colour_manual(values = cols, drop = FALSE) +
+  scale_fill_manual(values = cols, drop = FALSE, guide = "none") +
+  scale_x_continuous(breaks = seq(-0.8, 0.8, by = 0.2), limits = c(-0.85, 0.85)) +
+  coord_cartesian(xlim = c(-0.85, 0.85), ylim = c(-0.4, 0.3), clip = "off") +
+  labs(
+    x = "More common <               VoA - reference vocabulary size              > More idiosyncratic",
+    y = expression(Delta*"Production probability (Back - Front)"),
+    colour = "Lexical category") +
+  theme_bw(base_size = 13) +
+  theme(
+    legend.position = "right",
+    panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold")) +
+  guides(
+    colour = guide_legend(override.aes = list(linewidth = 2.4, alpha = 1, size = 3.5)))
+
+ggsave(here("Figures", "MA_04_Diff_BF_Cat.png"), width = 10, height = 5, dpi = 300)
+```
+
+
+### Profile diversity
+
+```{r}
+axis_cols <- c(
+  Front  = "#D86F93",
+  Center = "#7B6FD0",
+  Back   = "#E8A93E")
+
+
+# if you want to create "mean" profile and then calculate pairwise correlations (against the "mean profile")
+calc_profile_cor_summary <- function(df, axis_label) {
+  
+  out <- data.frame()
+  
+  for (pt in seq(0.1, 0.9, by = 0.1)) {
+    tmp <- df %>%
+      mutate(pTot = round(as.numeric(pTot), 1)) %>%
+      filter(pTot == round(pt, 1)) %>%
+      select(starts_with("item_")) %>%
+      as.matrix()
+    
+    if (nrow(tmp) == 0) {
+      out <- bind_rows(
+        out,
+        tibble(
+          pTot = pt,
+          ID = NA_integer_,
+          profile_cor = NA_real_,
+          axis = axis_label))
+      next
+    }
+    
+    mean_profile <- colMeans(tmp, na.rm = TRUE)
+    
+    cor_each <- apply(tmp, 1, function(x) {
+      cor(x, mean_profile, use = "pairwise.complete.obs")
+    })
+    
+    out <- bind_rows(
+      out,
+      tibble(
+        pTot = pt,
+        ID = seq_along(cor_each),
+        profile_cor = cor_each,
+        axis = axis_label))
+  }
+  out
+}
+
+# if you want to calculate all the pairwise correlations
+# calc_profile_cor_summary <- function(df, axis_label) {
+#   
+#   out <- data.frame()
+#   df <- df %>% mutate(pTot = round(as.numeric(pTot), 1))
+#   
+#   for (pt in round(seq(0.1, 0.9, by = 0.1), 1)) {
+#     tmp <- df %>%
+#       filter(pTot == pt) %>%
+#       select(starts_with("item_")) %>%
+#       as.matrix()
+#     
+#     # rows = samples, columns = items
+#     pair_ids <- combn(seq_len(nrow(tmp)), 2)
+#     
+#     cor_each <- apply(pair_ids, 2, function(idx) {
+#       cor(tmp[idx[1], ], tmp[idx[2], ], use = "pairwise.complete.obs")
+#     })
+#     out <- bind_rows(out,
+#       tibble(
+#         pTot = pt,
+#         pair_id = seq_along(cor_each),
+#         profile_cor = cor_each,
+#         axis = axis_label))
+#   }
+#   out
+# }
+
+profile.cor.all <- bind_rows(
+  calc_profile_cor_summary(d.front, "Front"),
+  calc_profile_cor_summary(d.center, "Center"),
+  calc_profile_cor_summary(d.back, "Back")) %>%
+  mutate(axis = factor(axis, levels = c("Back", "Center", "Front")))
+
+profile.cor.summary <- profile.cor.all %>%
+  group_by(pTot, axis) %>%
+  summarise(
+    mean_cor = mean(profile_cor, na.rm = TRUE),
+    sd_cor = sd(profile_cor, na.rm = TRUE),
+    n = sum(!is.na(profile_cor)),
+    se_cor = sd_cor / sqrt(n),
+    .groups = "drop")
+
+ggplot(profile.cor.summary, aes(x = pTot, y = mean_cor, colour = axis, group = axis)) +
+  geom_ribbon(
+    aes(ymin = mean_cor - se_cor, ymax = mean_cor + se_cor, fill = axis),
+    alpha = 0.22,
+    colour = NA,
+    show.legend = FALSE) +
+  geom_line(linewidth = 1.3) +
+  geom_point(size = 2.8, show.legend = FALSE) +
+  scale_colour_manual(values = axis_cols) +
+  scale_fill_manual(values = axis_cols) +
+  scale_x_continuous(breaks = seq(0.1, 0.9, by = 0.1)) +
+  labs(
+    x = "Total vocabulary size (prop)",
+    y = "Similarity to typical vocabulary profile (correlation)",
+    colour = "Position",
+    fill = "Position") +
+  scale_y_continuous(limits = c(.989, 1), breaks = seq(.990, 1, .002)) +
+  theme_bw(base_size = 13) +
+  theme(
+    legend.position = "right",
+    panel.grid.minor = element_blank(),
+    legend.title = element_text(face = "bold"))
+
+ggsave(here("Figures", "MA_05_BF_DIFF_BFC_Sim.png"), width = 12, height = 6, dpi = 300)
+
+
+profile.cor.summary.phase <- profile.cor.all %>% 
+  mutate(
+    phase = case_when(
+      pTot < 0.4 ~ "0.1–0.3",
+      pTot < 0.7 ~ "0.4–0.6",
+      TRUE         ~ "0.7–0.9"),
+    phase = factor(phase, levels = c("0.1–0.3", "0.4–0.6", "0.7–0.9"))) %>% 
+  group_by(axis, phase) %>%
+  summarise(
+    mean_cor = mean(profile_cor, na.rm = TRUE),
+    sd_cor = sd(profile_cor, na.rm = TRUE),
+    n = sum(!is.na(profile_cor)),
+    se_cor = sd_cor / sqrt(n),
+    .groups = "drop") %>% 
+  rename(position = axis)
+
+ggplot(profile.cor.summary.phase, aes(x = phase, y = mean_cor, colour = position, group = position)) +
+  geom_line(linewidth = 1.3) +
+  geom_errorbar(aes(ymin = mean_cor - se_cor, ymax = mean_cor + se_cor),
+    width = 0.08, linewidth = 0.6, show.legend = FALSE) +
+  geom_point(size = 2.8) +
+  scale_colour_manual(values = axis_cols) +
+  scale_y_continuous(limits = c(.991, 1), breaks = seq(.990, 1, .002)) +
+  labs(
+    x = "Total vocabulary size (prop)",
+    y = "Similarity to typical vocabulary profile (correlation)",
+    colour = "Position") +
+  theme_bw(base_size = 13) +
+  guides(colour = guide_legend(nrow = 1, byrow = TRUE, title.position = "top", title.hjust = 0)) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text.x = element_text(angle = 40, hjust = 1),
+    legend.position = "top",
+    legend.justification = "left",
+    legend.box.just = "left",
+    legend.margin = margin(t = 0, r = 0, b = 4, l = 0),
+    legend.box.spacing = unit(0, "pt"),
+    legend.title = element_text(face = "bold"))
+
+ggsave(here("Figures", "MA_05_BF_DIFF_BFC_Sim_2.png"), width = 3.1, height = 6, dpi = 300)
+```
+
+
+
+# Cor: LR vs. BF
+
+```{r}
+make_mean_profile <- function(df, pos_label) {
+  df %>%
+    mutate(pTot = round(as.numeric(pTot), 1)) %>%
+    pivot_longer(starts_with("item_"), names_to = "item_id", values_to = "prob") %>%
+    group_by(pTot, item_id) %>%
+    summarise(mean_prob = mean(prob, na.rm = TRUE), .groups = "drop") %>%
+    mutate(position = pos_label)
+}
+
+profile.mean <- bind_rows(
+  make_mean_profile(d.left,  "Left"),
+  make_mean_profile(d.right, "Right"),
+  make_mean_profile(d.back,  "Back"),
+  make_mean_profile(d.front, "Front"))
+```
+
+```{r}
+# LR contrast vs. BF contrast
+
+contrast.cor <- profile.mean %>%
+  select(pTot, item_id, position, mean_prob) %>%
+  pivot_wider(names_from = position, values_from = mean_prob) %>%
+  mutate(
+    LR = Left - Right,
+    BF = Back - Front) %>%
+  group_by(pTot) %>%
+  summarise(
+    r_LR_BF = cor(LR, BF, use = "pairwise.complete.obs"),
+    .groups = "drop")
+
+ggplot(contrast.cor, aes(x = pTot, y = r_LR_BF)) +
+  geom_hline(yintercept = 0, colour = "grey25", linewidth = 0.9) +
+  geom_line(linewidth = 1.3, colour = "grey20") +
+  geom_point(size = 2.8, colour = "grey20") +
+  scale_x_continuous(breaks = seq(0.1, 0.9, by = 0.1)) +
+  scale_y_continuous(limits = c(-1, 1), breaks = seq(-1, 1, by = 0.25)) +
+  labs(
+    x = "Total vocabulary size (prop)",
+    y = "Correlation between LR and BF contrasts") +
+  theme_bw(base_size = 13) +
+  theme(panel.grid.minor = element_blank())
+```
+

@@ -1,0 +1,213 @@
+---
+title: "Longitudinal Data"
+author: "Hiromichi Hagihara"
+date: "2026-04-18"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(lsa)
+library(stringr)
+library(readr)
+library(ggrepel)
+library(GGally)
+library(grid)
+library(colorspace)
+
+rm(list = ls())
+
+cat2_levels <- c("nouns", "verbs", "adjectives", "function_words", "other")
+
+target_dir <- here("Data_vaesampled_2025Dec19")
+
+d <- read_csv(here(target_dir, "long_data.csv")) %>% 
+  rename(Nominality = `Right-Left`,
+         Commonality = `Out-In`,
+         Name = name) %>% 
+  mutate(Name = case_when(Name == "debRoy" ~ "Roy et al. (2015)", TRUE ~ Name),
+         Name = factor(Name, levels = c("Sam", "Alice", "Asa", "Roy et al. (2015)")),
+         Nominality = - Nominality)
+```
+
+```{r}
+make_smooth_path <- function(df, spar = 0.55, n = 100) {
+  df <- df %>% arrange(AgeM)
+
+  age_grid <- seq(min(df$AgeM), max(df$AgeM), length.out = n)
+
+  sx <- smooth.spline(df$AgeM, df$Nominality, spar = spar)
+  sy <- smooth.spline(df$AgeM, df$Commonality, spar = spar)
+
+  tibble(
+    AgeM = age_grid,
+    Nominality = predict(sx, age_grid)$y,
+    Commonality = predict(sy, age_grid)$y
+  )
+}
+
+cols_child <- c(
+  "Sam" = "#8A6FA6",   
+  "Alice" = "#B07A2A",          
+  "Asa" = "#B85C5C",            
+  "Roy et al. (2015)" = "#3E8F6B")
+
+shapes_child <- c(
+  "Sam" = 16,
+  "Alice" = 15,
+  "Asa" = 17,
+  "Roy et al. (2015)" = 18)
+```
+
+```{r}
+d_smooth <- d %>%
+  group_by(Name) %>%
+  group_modify(~ make_smooth_path(.x, spar = 0.52)) %>%
+  ungroup()
+
+d <- d %>%
+  group_by(Name) %>%
+  mutate(
+    Age_scaled = (AgeM - min(AgeM)) / (max(AgeM) - min(AgeM)),
+    col_age = colorspace::lighten(cols_child[Name], amount = 0.65 * (1 - Age_scaled)),
+    panel = case_when(Name %in% c("Sam", "Asa") ~ "Sam / Asa", TRUE ~ "Alice / Roy et al. (2015)")) %>%
+  ungroup()
+
+d_smooth <- d_smooth %>%
+  group_by(Name) %>%
+  mutate(
+    Age_scaled = (AgeM - min(AgeM)) / (max(AgeM) - min(AgeM)),
+    col_age = colorspace::lighten(cols_child[Name], amount = 0.65 * (1 - Age_scaled)),
+    panel = case_when(Name %in% c("Sam", "Asa") ~ "Sam / Asa", TRUE ~ "Alice / Roy et al. (2015)")) %>%
+  ungroup()
+
+d_raw_path <- d %>% arrange(Name, AgeM)
+
+d_seg <- d_smooth %>%
+  arrange(Name, AgeM) %>%
+  group_by(Name) %>%
+  mutate(
+    xend = lead(Nominality),
+    yend = lead(Commonality),
+    col_mid = lead(col_age),
+    panel = case_when(Name %in% c("Sam", "Asa") ~ "Sam / Asa", TRUE ~ "Alice / Roy et al. (2015)")) %>%
+  filter(!is.na(xend)) %>%
+  ungroup()
+
+d_arrow <- d_seg %>%
+  group_by(Name) %>%
+  slice_tail(n = 1) %>%
+  ungroup() %>% 
+  mutate(panel = case_when(Name %in% c("Sam", "Asa") ~ "Sam / Asa", TRUE ~ "Alice / Roy et al. (2015)"))
+
+label_ages <- d %>%
+  group_by(Name) %>%
+  summarise(
+    age_start = min(AgeM),
+    age_mid   = round(median(AgeM)),
+    age_end   = max(AgeM),
+    .groups = "drop") %>%
+  pivot_longer(
+    cols = starts_with("age_"),
+    names_to = "label_type",
+    values_to = "AgeM_target")
+
+d_lab <- d_smooth %>%
+  inner_join(label_ages, by = "Name", relationship = "many-to-many") %>%
+  group_by(Name, label_type) %>%
+  slice_min(abs(AgeM - AgeM_target), n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  mutate(Age_lab = paste0(round(AgeM_target), " mo"),
+         panel = case_when(Name %in% c("Sam", "Asa") ~ "Sam / Asa", TRUE ~ "Alice / Roy et al. (2015)"))
+```
+
+```{r}
+ggplot() +
+  geom_hline(yintercept = 0, colour = "grey25", linewidth = 0.8) +
+  geom_vline(xintercept = 0, colour = "grey25", linewidth = 0.8) +
+  geom_path(
+    data = d_raw_path,
+    aes(x = Commonality, y = Nominality, group = Name),
+    colour = d_raw_path$col_age,
+    linewidth = 0.6,
+    alpha = 0.30,
+    lineend = "round",
+    show.legend = FALSE) +
+  geom_segment(
+    data = d_arrow,
+    aes(
+      x = Commonality, y = Nominality,
+      xend = yend, yend = xend),
+    colour = d_arrow$col_mid,
+    linewidth = 2.5,
+    arrow = arrow(length = unit(0.3, "cm"), angle = 30, type = "closed"),
+    lineend = "round",
+    show.legend = FALSE) +
+  geom_segment(
+    data = d_seg,
+    aes(
+      x = Commonality, y = Nominality,
+      xend = yend, yend = xend),
+    colour = d_seg$col_mid,
+    linewidth = 2.6,
+    alpha = 0.95,
+    lineend = "round",
+    show.legend = FALSE) +
+  geom_point(
+    data = d,
+    aes(x = Commonality, y = Nominality, shape = Name),
+    colour = d$col_age,
+    size = 1.5,
+    alpha = 0.4,
+    show.legend = FALSE) +
+  geom_point(
+    data = d %>% group_by(Name) %>% slice_tail(n = 1) %>% ungroup(),
+    aes(x = Commonality, y = Nominality, colour = Name, shape = Name),
+    size = 3.8,
+    alpha = 0,
+    show.legend = TRUE) +
+  geom_label_repel(
+    data = d_lab,
+    aes(x = Commonality, y = Nominality, label = Age_lab, colour = Name),
+    fill = scales::alpha("white", 0.88),
+    label.size = 0,
+    label.r = unit(0.12, "lines"),
+    size = 2.9,
+    fontface = "bold",
+    box.padding = 0.75,
+    point.padding = 0.8,
+    force = 18,
+    force_pull = 0.02,
+    segment.size = 0.25,
+    segment.colour = "grey55",
+    min.segment.length = 0,
+    max.overlaps = Inf,
+    show.legend = FALSE) +
+  # coord_equal() +
+  facet_wrap(~ panel, nrow = 1) +
+  # facet_wrap(~ Name, nrow = 2) +
+  labs(
+    x = "Commonality (Back - Front)",
+    y = "Nominality (Left - Right)") +
+  scale_colour_manual(values = cols_child, name = "Child") +
+  scale_shape_manual(values = shapes_child, name = "Child") +
+  guides(
+    colour = guide_legend(
+      override.aes = list(
+        alpha = 1,
+        size = 4,
+        shape = unname(shapes_child))),
+    shape = "none") +
+  theme_bw(base_size = 13) +
+  theme(
+    # legend.position = "none",
+    legend.position = "right",
+    legend.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank())
+
+ggsave(here("Figures", "EN_06_Long_SAYR.png"), width = 10, height = 4.5, dpi = 300)
+# ggsave(here("Figures", "EN_06_Long_SAYR.png"), width = 6, height = 6, dpi = 300)
+```
+

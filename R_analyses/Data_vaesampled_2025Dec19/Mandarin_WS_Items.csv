@@ -1,0 +1,800 @@
+﻿item_id,category1,category2,item_definition,english_gloss,uni_lemma,AoA
+item_1,sounds,other,喂？,NA,hello,12
+item_2,sounds,other,旺旺（狗叫）,woof woof,woof woof,13
+item_3,sounds,other,喵（猫叫）,meow,meow,15
+item_4,sounds,other,嘀嘀（汽车声）,vroom,vroom,15
+item_5,sounds,other,哎哟,NA,NA,16
+item_6,sounds,other,呀,NA,NA,14
+item_7,sounds,other,咩咩（羊叫声）,baa baa,baa baa,18
+item_8,sounds,other,嘎嘎（鸭子叫）,quack quack,quack quack,17
+item_9,sounds,other,嘎嘎达（鸡叫）,cluck,cluck,19
+item_10,sounds,other,梆梆（打枪）,bang,bang bang,18
+item_11,sounds,other,喳喳（鸟叫）,tweet tweet,tweet tweet,18
+item_12,sounds,other,嗷（狮子叫）,roar,roar,13
+item_13,people,other,妈妈,mommy,mommy,12
+item_14,people,other,爸爸,daddy,daddy,12
+item_15,people,other,奶奶,grandma,grandma,12
+item_16,people,other,姥 姥,grandma,grandma,16
+item_17,people,other,爷爷,grandpa,grandpa,12
+item_18,people,other,姥爷,grandpa,grandpa,19
+item_19,people,other,宝宝,baby,baby,17
+item_20,people,other,自己的名字,child's own name,child's own name,18
+item_21,people,other,阿姨,aunt,aunt,15
+item_22,people,other,姑姑,aunt,aunt,17
+item_23,people,other,叔叔,uncle,uncle,18
+item_24,people,other,伯伯（大大）,uncle,uncle,12
+item_25,people,other,舅舅,uncle,uncle,18
+item_26,people,other,姐姐,sister,sister,15
+item_27,people,other,妹妹,sister,sister,16
+item_28,people,other,哥哥,brother,brother,15
+item_29,people,other,弟弟,brother,brother,17
+item_30,people,other,小朋友的名字,NA,friends' names,20
+item_31,people,other,大妈,NA,NA,22
+item_32,people,other,人,person,person,21
+item_33,people,other,孩子/小孩/小朋友,NA,child,21
+item_34,people,other,女孩,girl,girl,23
+item_35,people,other,男孩,boy,boy,23
+item_36,people,other,男人,man,man,29
+item_37,people,other,老师,teacher,teacher,23
+item_38,people,other,警察,policeman,police,23
+item_39,people,other,医生/大夫,NA,doctor,23
+item_40,people,other,唐老鸭,donald duck,NA,24
+item_41,people,other,米老鼠,mickey mouse,NA,24
+item_42,people,other,孙悟空,sun wukong,NA,22
+item_43,people,other,猪八戒,zhu bajie,NA,22
+item_44,people,other,朋友,friend,friend,23
+item_45,games_routines,other,要,want,wanna,16
+item_46,games_routines,other,不要,don't,don't,18
+item_47,games_routines,other,再见/Byebye,bye,bye,14
+item_48,games_routines,other,谢谢,thank you,thank you,17
+item_49,games_routines,other,撒尿/尿尿,pee,pee,17
+item_50,games_routines,other,拉屎/拉臭臭,poop,poop,19
+item_51,games_routines,other,吃饭,eat,eat,19
+item_52,games_routines,other,洗澡,bath,bath,20
+item_53,games_routines,other,休息/歇会儿,nap,nap,23
+item_54,games_routines,other,买(东西),buy,buy,19
+item_55,games_routines,other,打（电话）,phone,call,17
+item_56,games_routines,other,藏猫猫,hide and seek,hide and seek,21
+item_57,games_routines,other,抓（逮）住了!,catch,catch,23
+item_58,games_routines,other,你拍一，我拍一,clap,clap,22
+item_59,games_routines,other,你好,hello,hello,21
+item_60,games_routines,other,（某某某）好,hello,hello,19
+item_61,games_routines,other,请,please,please,23
+item_62,games_routines,other,(真)棒!,good job,bravo,19
+item_63,games_routines,other,好吧,ok,ok,20
+item_64,games_routines,other,是,yes,yes,18
+item_65,games_routines,other,对了,NA,NA,21
+item_66,games_routines,other,不行,cannot,cannot,20
+item_67,games_routines,other,快点,fast,fast,21
+item_68,games_routines,other,等等,wait,wait,21
+item_69,games_routines,other,轻点,easy,easy,24
+item_70,games_routines,other,听话,NA,listen,21
+item_71,games_routines,other,上学,go to school,go to school,23
+item_72,games_routines,other,一岁/两岁,NA,years old,19
+item_73,action_words,verbs,抱,hug,hug,13
+item_74,action_words,verbs,拿（过来）,NA,bring,15
+item_75,action_words,verbs,来,come,come,17
+item_76,action_words,verbs,走,walk,walk,17
+item_77,action_words,verbs,坐,sit,sit,18
+item_78,action_words,verbs,站,stand,stand,20
+item_79,action_words,verbs,蹲,squat,squat,20
+item_80,action_words,verbs,尿,pee,pee,17
+item_81,action_words,verbs,上,up,up,18
+item_82,action_words,verbs,下,down,down,19
+item_83,action_words,verbs,喝,drink (action),drink (action),18
+item_84,action_words,verbs,吃,eat,eat,17
+item_85,action_words,verbs,喂,feed,feed,19
+item_86,action_words,verbs,爬,climb,climb,19
+item_87,action_words,verbs,要,need,need,17
+item_88,action_words,verbs,有,have,have,18
+item_89,action_words,verbs,睡觉,sleep,sleep,19
+item_90,action_words,verbs,盖上,cover,cover (action),20
+item_91,action_words,verbs,玩,play,play,19
+item_92,action_words,verbs,开（门）,open,open (action),18
+item_93,action_words,verbs,关,close,close,19
+item_94,action_words,verbs,画画,draw,draw,20
+item_95,action_words,verbs,打,hit,hit,15
+item_96,action_words,verbs,背,back,carry,18
+item_97,action_words,verbs,戴,wear,wear,18
+item_98,action_words,verbs,洗,wash,wash,18
+item_99,action_words,verbs,擦,wipe,wipe,19
+item_100,action_words,verbs,亲（一个）,kiss,kiss,19
+item_101,action_words,verbs,飞,fly,fly (action),17
+item_102,action_words,verbs,亮了,brighten,brighten,20
+item_103,action_words,verbs,打开,open,open (action),20
+item_104,action_words,verbs,起来,get up,get up,20
+item_105,action_words,verbs,剥,peel,peel,19
+item_106,action_words,verbs,叫,cry,cry,20
+item_107,action_words,verbs,看,look,look,19
+item_108,action_words,verbs,跑,run,run,19
+item_109,action_words,verbs,跳,jump,jump,20
+item_110,action_words,verbs,踢,kick,kick,19
+item_111,action_words,verbs,倒（水）,pour,pour,19
+item_112,action_words,verbs,买,buy,buy,19
+item_113,action_words,verbs,摸,touch,touch,19
+item_114,action_words,verbs,穿,wear,wear,19
+item_115,action_words,verbs,给,give,give,18
+item_116,action_words,verbs,送,send,send,22
+item_117,action_words,verbs,掉,drop,drop,18
+item_118,action_words,verbs,笑,smile,smile,20
+item_119,action_words,verbs,哭,cry,cry,19
+item_120,action_words,verbs,拍,clap,clap,18
+item_121,action_words,verbs,会,can,can (auxiliary),20
+item_122,action_words,verbs,写,write,write,20
+item_123,action_words,verbs,躺,lie,lie down,19
+item_124,action_words,verbs,趴,lie,lie down,20
+item_125,action_words,verbs,骑,ride,ride,20
+item_126,action_words,verbs,开（车）,drive,drive,19
+item_127,action_words,verbs,蹦,hop,hop,20
+item_128,action_words,verbs,扫（地）,sweep,sweep,20
+item_129,action_words,verbs,去,go,go,19
+item_130,action_words,verbs,放,put,put,20
+item_131,action_words,verbs,咬,bite,bite,19
+item_132,action_words,verbs,扔,throw,throw,19
+item_133,action_words,verbs,吐,spit,spit,20
+item_134,action_words,verbs,说,say,say,20
+item_135,action_words,verbs,吹,blow,blow,19
+item_136,action_words,verbs,追,chase,chase,21
+item_137,action_words,verbs,摔,fall,fall,20
+item_138,action_words,verbs,是（什么）,be,be,20
+item_139,action_words,verbs,想,think,think,21
+item_140,action_words,verbs,知道,know,know,21
+item_141,action_words,verbs,梳,comb,comb (action),20
+item_142,action_words,verbs,刷,brush,brush (action),20
+item_143,action_words,verbs,唱,sing,sing,20
+item_144,action_words,verbs,听,hear,hear,20
+item_145,action_words,verbs,听见,hear,hear,21
+item_146,action_words,verbs,扎,prick,prick,20
+item_147,action_words,verbs,推,push,push,20
+item_148,action_words,verbs,捡,pick up,pick up,20
+item_149,action_words,verbs,找,look,look for,20
+item_150,action_words,verbs,倒了,fall,fall,20
+item_151,action_words,verbs,进去,enter,enter,21
+item_152,action_words,verbs,出去,leave,leave,21
+item_153,action_words,verbs,过,cross,cross,21
+item_154,action_words,verbs,回来,return,return,21
+item_155,action_words,verbs,踩,step,step,19
+item_156,action_words,verbs,藏,hide,hide,21
+item_157,action_words,verbs,拉/拽,pull,pull,20
+item_158,action_words,verbs,讲,tell,tell,21
+item_159,action_words,verbs,握（手）,shake,shake,21
+item_160,action_words,verbs,敲,knock,knock,20
+item_161,action_words,verbs,闭（眼、嘴）,close,close,21
+item_162,action_words,verbs,丢,lose,lose,21
+item_163,action_words,verbs,喜欢,love,like,21
+item_164,action_words,verbs,动,move,move,21
+item_165,action_words,verbs,等,wait,wait,20
+item_166,action_words,verbs,醒,wake,wake,21
+item_167,action_words,verbs,滑,slide (action),slide (action),21
+item_168,action_words,verbs,切（菜）,cut,cut,22
+item_169,action_words,verbs,剪,cut,cut,21
+item_170,action_words,verbs,撕,tear,tear,20
+item_171,action_words,verbs,洒,splash,splash,20
+item_172,action_words,verbs,撒,spill,spill,22
+item_173,action_words,verbs,响,sound (action),sound (action),20
+item_174,action_words,verbs,接,receive,receive,21
+item_175,action_words,verbs,碰,hit,hit,21
+item_176,action_words,verbs,蹬,step,step,22
+item_177,action_words,verbs,抓,catch,catch,21
+item_178,action_words,verbs,搬,move,move,21
+item_179,action_words,verbs,端,carry,carry,23
+item_180,action_words,verbs,揉,rub,rub,22
+item_181,action_words,verbs,转,spin,spin,21
+item_182,action_words,verbs,爱,love,love,20
+item_183,action_words,verbs,乐（一个）,smile,smile,21
+item_184,action_words,verbs,数数,count,count,21
+item_185,action_words,verbs,磕,knock,knock,21
+item_186,action_words,verbs,翻,flip,flip,21
+item_187,action_words,verbs,夹,pick,pick,21
+item_188,action_words,verbs,闻,smell,smell,21
+item_189,action_words,verbs,尝,taste,taste,22
+item_190,action_words,verbs,咽,swallow,swallow,22
+item_191,action_words,verbs,做饭,cook,cook,22
+item_192,action_words,verbs,跳舞,dance,dance,21
+item_193,action_words,verbs,换,exchange,exchange,21
+item_194,action_words,verbs,抹（油等）,wipe,wipe,20
+item_195,action_words,verbs,装,fill,fill,20
+item_196,action_words,verbs,摘（揪）,pick,pick,21
+item_197,action_words,verbs,让,let,let,22
+item_198,action_words,verbs,修,fix,fix,21
+item_199,action_words,verbs,使劲,put in effort,NA,22
+item_200,action_words,verbs,举,lift,lift (action),20
+item_201,action_words,verbs,挂,hang,hang,21
+item_202,action_words,verbs,滚,roll,roll (action),22
+item_203,action_words,verbs,挖,dig,dig,22
+item_204,action_words,verbs,扶,support,support,20
+item_205,action_words,verbs,学,learn,learn,21
+item_206,action_words,verbs,记（得）,remember,remember,22
+item_207,action_words,verbs,打破/打碎,break,break,23
+item_208,action_words,verbs,扭,twist,twist,22
+item_209,action_words,verbs,停,stop,stop,21
+item_210,action_words,verbs,压,squeeze,squeeze,21
+item_211,action_words,verbs,撞,bump,bump,22
+item_212,action_words,verbs,插,insert,insert,22
+item_213,action_words,verbs,搂,hug,hug,20
+item_214,action_words,verbs,带,bring,bring,21
+item_215,action_words,verbs,搭,ride,ride,23
+item_216,action_words,verbs,跟着,follow,follow,22
+item_217,action_words,verbs,拨（电话）,NA,call,22
+item_218,action_words,verbs,逗,amuse,amuse,22
+item_219,action_words,verbs,排（队）,queue,queue,23
+item_220,action_words,verbs,干（什么）,NA,do,21
+item_221,action_words,verbs,用,use,use,22
+item_222,action_words,verbs,舔,lick,lick,22
+item_223,action_words,verbs,嚼,chew,chew,22
+item_224,action_words,verbs,拐（弯）,turn,turn,22
+item_225,action_words,verbs,弯,bend,bend,23
+item_226,action_words,verbs,抢,grab,grab,21
+item_227,action_words,verbs,眨（眼）,blink,blink,23
+item_228,action_words,verbs,拧,wind,wind,23
+item_229,action_words,verbs,叫唤,shout,shout,23
+item_230,action_words,verbs,瞧,look,look,21
+item_231,action_words,verbs,弄,make,make,22
+item_232,action_words,verbs,游泳,swim,swim,24
+item_233,action_words,verbs,贴,stick,stick,22
+item_234,action_words,verbs,拔（草）,pick,pick,22
+item_235,action_words,verbs,长（大）,grow,grow,22
+item_236,action_words,verbs,套,cap,cover (action),24
+item_237,action_words,verbs,拆,break,break,21
+item_238,action_words,verbs,读,read,read,22
+item_239,action_words,verbs,搁,put,put,23
+item_240,action_words,verbs,瞅,look,look,24
+item_241,action_words,verbs,逮（坏蛋）,catch,catch,25
+item_242,action_words,verbs,躲,hide,hide,22
+item_243,action_words,verbs,待（一会儿）,wait,wait,22
+item_244,action_words,verbs,嚷,shout,shout,23
+item_245,action_words,verbs,问,ask,ask,23
+item_246,action_words,verbs,告诉,tell,tell,24
+item_247,action_words,verbs,捋/挽（袖子）,tug,tug,24
+item_248,action_words,verbs,冲,rinse,rinse,22
+item_249,action_words,verbs,帮助/帮忙,help,help,24
+item_250,action_words,verbs,拖,pull,pull,23
+item_251,action_words,verbs,悠,swing (action),swing (action),25
+item_252,action_words,verbs,绑,tie,tie (action),25
+item_253,action_words,verbs,搅,stir,stir,25
+item_254,action_words,verbs,绕,go around,go around,24
+item_255,action_words,verbs,摁（按）,press,press,23
+item_256,action_words,verbs,做梦,dream,dream,26
+item_257,action_words,verbs,工作,work (action),work (action),27
+item_258,action_words,verbs,试,try,try,24
+item_259,action_words,verbs,卖,sell,sell,23
+item_260,action_words,verbs,掸掸,wipe,wipe,24
+item_261,action_words,verbs,收拾,tidy (action),clean (action),25
+item_262,action_words,verbs,忘记,forget,forget,24
+item_263,action_words,verbs,假装,pretend,pretend,26
+item_264,action_words,verbs,希望,hope,hope,NA
+item_265,action_words,verbs,抖搂,shake,shake,29
+item_266,action_words,verbs,蹭,rub,rub,26
+item_267,food_drink,nouns,水,water (beverage),water (beverage),17
+item_268,food_drink,nouns,牛奶,milk,milk,17
+item_269,food_drink,nouns,粥,porridge,porridge,19
+item_270,food_drink,nouns,汤,soup,soup,20
+item_271,food_drink,nouns,酸奶,yogurt,yogurt,21
+item_272,food_drink,nouns,乐百氏,NA,kefir,21
+item_273,food_drink,nouns,果汁,juice,juice,22
+item_274,food_drink,nouns,可乐,coke,coke,22
+item_275,food_drink,nouns,汽水,soda,soda,25
+item_276,food_drink,nouns,茶,tea,tea,21
+item_277,food_drink,nouns,饮料,drink (beverage),drink (beverage),25
+item_278,food_drink,nouns,饭,food,food,17
+item_279,food_drink,nouns,米,rice,rice,19
+item_280,food_drink,nouns,饺子,dumpling,dumpling,19
+item_281,food_drink,nouns,面条,noodles,pasta,19
+item_282,food_drink,nouns,包子,bun,bun,18
+item_283,food_drink,nouns,馒头,bun,bun,20
+item_284,food_drink,nouns,馄饨,dumpling,dumpling,24
+item_285,food_drink,nouns,肉,meat,meat,17
+item_286,food_drink,nouns,鱼,fish (food),fish (food),17
+item_287,food_drink,nouns,蛋,egg,egg,17
+item_288,food_drink,nouns,虾,shrimp,shrimp,19
+item_289,food_drink,nouns,鸡肉,chicken (food),chicken (food),23
+item_290,food_drink,nouns,肝儿（猪肝、鸡肝）,liver,liver (food),24
+item_291,food_drink,nouns,菜,dish,dish,17
+item_292,food_drink,nouns,豆子,beans,beans,18
+item_293,food_drink,nouns,扁豆,beans,beans,24
+item_294,food_drink,nouns,豆芽,sprouts,sprouts,24
+item_295,food_drink,nouns,瓜,melon,melon,19
+item_296,food_drink,nouns,白菜,cabbage,cabbage,22
+item_297,food_drink,nouns,菠菜,spinach,spinach,24
+item_298,food_drink,nouns,萝卜,carrots,carrot,21
+item_299,food_drink,nouns,土豆,potato,potato,23
+item_300,food_drink,nouns,西红柿,tomato,tomato,21
+item_301,food_drink,nouns,黄瓜,cucumber,cucumber,21
+item_302,food_drink,nouns,玉米,corn,corn,23
+item_303,food_drink,nouns,豆腐,tofu,tofu,22
+item_304,food_drink,nouns,葱,scallion,scallion,23
+item_305,food_drink,nouns,蘑菇,mushrooms,mushroom,24
+item_306,food_drink,nouns,木耳,mushroom,mushroom,27
+item_307,food_drink,nouns,水果,fruit,fruit,23
+item_308,food_drink,nouns,苹果,apple,apple,20
+item_309,food_drink,nouns,香蕉,banana,banana,19
+item_310,food_drink,nouns,橘子,orange (food),orange (food),19
+item_311,food_drink,nouns,橙子,orange (food),orange (food),26
+item_312,food_drink,nouns,葡萄,grapes,grapes,20
+item_313,food_drink,nouns,西瓜,watermelon,watermelon,20
+item_314,food_drink,nouns,草莓,strawberry,strawberry,20
+item_315,food_drink,nouns,梨,pear,pear,19
+item_316,food_drink,nouns,糖,sugar,sugar,18
+item_317,food_drink,nouns,饼,pancake,pancake,20
+item_318,food_drink,nouns,饼干,cookie,cookie,20
+item_319,food_drink,nouns,面包,bread,bread,21
+item_320,food_drink,nouns,蛋糕,cake,cake,21
+item_321,food_drink,nouns,果冻,jelly,jelly,21
+item_322,food_drink,nouns,瓜子,melon,melon,21
+item_323,food_drink,nouns,花生,peanut,peanut,22
+item_324,food_drink,nouns,核桃,walnut,nut,23
+item_325,food_drink,nouns,巧克力,chocolate,chocolate,22
+item_326,food_drink,nouns,薯条,french fries,french fries,22
+item_327,food_drink,nouns,冰棍儿,popsicle,popsicle,23
+item_328,food_drink,nouns,糖葫芦,candied fruit,NA,24
+item_329,food_drink,nouns,冰淇淋,ice cream,ice cream,24
+item_330,food_drink,nouns,油条,dough fritters,donut,25
+item_331,food_drink,nouns,面/面粉,flour,flour,22
+item_332,food_drink,nouns,辣椒,pepper,pepper,24
+item_333,food_drink,nouns,盐,salty,salt,24
+item_334,food_drink,nouns,醋,vinegar,vinegar,24
+item_335,food_drink,nouns,酱油,sauce,sauce,25
+item_336,body_parts,nouns,头,head,head,17
+item_337,body_parts,nouns,脑袋,brain,brain,22
+item_338,body_parts,nouns,头发,hair,hair,20
+item_339,body_parts,nouns,脸,face,face,19
+item_340,body_parts,nouns,眼睛,eye,eye,20
+item_341,body_parts,nouns,眉毛,eyebrows,eyebrow,21
+item_342,body_parts,nouns,脸蛋,cheek,cheek,24
+item_343,body_parts,nouns,耳朵,ear,ear,20
+item_344,body_parts,nouns,鼻子,nose,nose,19
+item_345,body_parts,nouns,嘴（口）,mouth,mouth,19
+item_346,body_parts,nouns,嘴唇,lips,lip,25
+item_347,body_parts,nouns,牙,tooth,tooth,19
+item_348,body_parts,nouns,舌头,tongue,tongue,21
+item_349,body_parts,nouns,下巴,chin,chin,26
+item_350,body_parts,nouns,脖子,neck,neck,22
+item_351,body_parts,nouns,肩膀,shoulder,shoulder,25
+item_352,body_parts,nouns,胳膊,arm,arm,22
+item_353,body_parts,nouns,手,hand,hand,18
+item_354,body_parts,nouns,手指头,finger,finger,23
+item_355,body_parts,nouns,大拇指,thumb,thumb,24
+item_356,body_parts,nouns,肚子,tummy,tummy,18
+item_357,body_parts,nouns,肚脐眼,belly button,belly button,23
+item_358,body_parts,nouns,屁股,butt,butt,18
+item_359,body_parts,nouns,腿,leg,leg,19
+item_360,body_parts,nouns,脚/脚丫丫,foot,foot,17
+item_361,body_parts,nouns,膝盖,knee,knee,27
+item_362,body_parts,nouns,脚腕,ankle,ankle,NA
+item_363,animals,nouns,猫,cat,cat,16
+item_364,animals,nouns,小白兔/兔子,bunny,bunny,18
+item_365,animals,nouns,马,horse,horse,18
+item_366,animals,nouns,羊,sheep,sheep,19
+item_367,animals,nouns,狗,dog,dog,18
+item_368,animals,nouns,猴子,monkey,monkey,20
+item_369,animals,nouns,老虎,tiger,tiger,19
+item_370,animals,nouns,牛,cow,cow,19
+item_371,animals,nouns,熊,bear,bear,20
+item_372,animals,nouns,猪,pig,pig,20
+item_373,animals,nouns,大象,elephant,elephant,20
+item_374,animals,nouns,熊猫,panda,panda,22
+item_375,animals,nouns,狮子,lion,lion,22
+item_376,animals,nouns,老鼠,mouse,mouse,21
+item_377,animals,nouns,猩猩,gorilla,gorilla,25
+item_378,animals,nouns,鹿,deer,deer,21
+item_379,animals,nouns,狼,wolf,wolf,23
+item_380,animals,nouns,斑马,zebra,zebra,24
+item_381,animals,nouns,长颈鹿,giraffe,giraffe,23
+item_382,animals,nouns,骆驼,camel,camel,24
+item_383,animals,nouns,刺猬,hedgehog,hedgehog,26
+item_384,animals,nouns,动物,animal,animal,24
+item_385,animals,nouns,鸭子,duck,duck,18
+item_386,animals,nouns,鸟,bird,bird,18
+item_387,animals,nouns,小鸡,chick,chick,18
+item_388,animals,nouns,燕子,swallow,swallow (animal),22
+item_389,animals,nouns,鸽子,pigeon,pigeon,21
+item_390,animals,nouns,鹅,goose,goose,22
+item_391,animals,nouns,企鹅,penguin,penguin,24
+item_392,animals,nouns,喜鹊,magpie,magpie,27
+item_393,animals,nouns,孔雀,peacock,peacock,24
+item_394,animals,nouns,乌鸦,crow,crow,27
+item_395,animals,nouns,老鹰,eagle,eagle,26
+item_396,animals,nouns,猫头鹰,owl,owl,26
+item_397,animals,nouns,鱼,fish (animal),fish (animal),17
+item_398,animals,nouns,虫子,bug,bug,20
+item_399,animals,nouns,乌龟,turtle,turtle,22
+item_400,animals,nouns,青蛙,frog,frog,22
+item_401,animals,nouns,蚂蚁,ant,ant,22
+item_402,animals,nouns,龙,dragon,dragon,23
+item_403,animals,nouns,蝴蝶,butterfly,butterfly,22
+item_404,animals,nouns,蜻蜓,dragonfly,dragonfly,24
+item_405,animals,nouns,蚊子,mosquito,mosquito,23
+item_406,animals,nouns,苍蝇,fly,fly (animal),23
+item_407,animals,nouns,蛇,snake,snake,23
+item_408,animals,nouns,鳄鱼,alligator,alligator,26
+item_409,animals,nouns,蛐蛐,cricket,cricket,NA
+item_410,animals,nouns,恐龙,dinosaur,dinosaur,26
+item_411,animals,nouns,蟑螂,cockroach,cockroach,30
+item_412,descriptive_words,adjectives,没了,all gone,all gone,16
+item_413,descriptive_words,adjectives,大,big,big,17
+item_414,descriptive_words,adjectives,小,little (description),little (description),19
+item_415,descriptive_words,adjectives,好,good,good,18
+item_416,descriptive_words,adjectives,坏,bad,bad,20
+item_417,descriptive_words,adjectives,香,fragrant,fragrant,19
+item_418,descriptive_words,adjectives,臭,smelly,smelly,18
+item_419,descriptive_words,adjectives,烫,hot,hot,18
+item_420,descriptive_words,adjectives,热,hot,hot,20
+item_421,descriptive_words,adjectives,凉,cool,cool (description),20
+item_422,descriptive_words,adjectives,冷,cold,cold,21
+item_423,descriptive_words,adjectives,饱,full,full,18
+item_424,descriptive_words,adjectives,饿,hungry,hungry,20
+item_425,descriptive_words,adjectives,渴,thirsty,thirsty,20
+item_426,descriptive_words,adjectives,甜,sweet,sweet,20
+item_427,descriptive_words,adjectives,辣,spicy,spicy,20
+item_428,descriptive_words,adjectives,酸,sour,sour,22
+item_429,descriptive_words,adjectives,咸,salty,salty,23
+item_430,descriptive_words,adjectives,脏,dirty,dirty,19
+item_431,descriptive_words,adjectives,干净,clean (description),clean (description),22
+item_432,descriptive_words,adjectives,害怕,scared,scared,19
+item_433,descriptive_words,adjectives,疼,hurt,hurt (description),19
+item_434,descriptive_words,adjectives,乖,well-behaved,well-behaved,19
+item_435,descriptive_words,adjectives,坏了,broken,broken,21
+item_436,descriptive_words,adjectives,破了,NA,broken,21
+item_437,descriptive_words,adjectives,淘气（调皮）,naughty,naughty,23
+item_438,descriptive_words,adjectives,讨厌,hate,hate,22
+item_439,descriptive_words,adjectives,快,fast,fast,20
+item_440,descriptive_words,adjectives,慢/慢点,slow,slow,21
+item_441,descriptive_words,adjectives,可爱/好玩儿,cute,cute,22
+item_442,descriptive_words,adjectives,可怜,pitiful,pitiful,30
+item_443,descriptive_words,adjectives,累,tired,tired,21
+item_444,descriptive_words,adjectives,困了,sleepy,sleepy,21
+item_445,descriptive_words,adjectives,病,sick,sick,22
+item_446,descriptive_words,adjectives,高,high,high,20
+item_447,descriptive_words,adjectives,漂亮/美,pretty,pretty,20
+item_448,descriptive_words,adjectives,喜欢,like,like,21
+item_449,descriptive_words,adjectives,新,new,new,22
+item_450,descriptive_words,adjectives,老,old,old,22
+item_451,descriptive_words,adjectives,高兴/乐/开心,happy,happy,22
+item_452,descriptive_words,adjectives,生气,angry,angry,23
+item_453,descriptive_words,adjectives,委屈,aggrieved,aggrieved,NA
+item_454,descriptive_words,adjectives,可怜,wet,wet (description),19
+item_455,descriptive_words,adjectives,累,dry,dry (description),21
+item_456,descriptive_words,adjectives,困了,loud,loud,21
+item_457,descriptive_words,adjectives,病,long,long,22
+item_458,descriptive_words,adjectives,高,hard,hard,23
+item_459,descriptive_words,adjectives,漂亮/美,soft,soft,23
+item_460,descriptive_words,adjectives,喜欢,finished,finished,21
+item_461,descriptive_words,adjectives,新,enough,enough,24
+item_462,descriptive_words,adjectives,老,empty,empty,23
+item_463,descriptive_words,adjectives,高兴/乐/开心,full,full,23
+item_464,descriptive_words,adjectives,生气,heavy,heavy,23
+item_465,descriptive_words,adjectives,委屈,careful,careful,25
+item_466,descriptive_words,adjectives,不错,NA,NA,27
+item_467,descriptive_words,adjectives,粘糊,sticky,sticky,29
+item_468,descriptive_words,adjectives,卡了,stuck,stuck,28
+item_469,descriptive_words,adjectives,白,white,white,19
+item_470,descriptive_words,adjectives,黑,black,black,21
+item_471,descriptive_words,adjectives,红（色）,red,red,20
+item_472,descriptive_words,adjectives,绿,green,green,21
+item_473,descriptive_words,adjectives,黄,yellow,yellow,21
+item_474,descriptive_words,adjectives,蓝（色）,blue,blue,22
+item_475,descriptive_words,adjectives,黑乎乎,dark,dark,30
+item_476,descriptive_words,adjectives,第一,first,first,25
+item_477,descriptive_words,adjectives,最后,last,last,28
+item_478,household,nouns,碗,bowl,bowl,19
+item_479,household,nouns,杯子,cup,cup,19
+item_480,household,nouns,瓶子,bottle,bottle,20
+item_481,household,nouns,勺,spoon,spoon,18
+item_482,household,nouns,筷子,chopstick,chopstick,20
+item_483,household,nouns,盘,plate,plate,21
+item_484,household,nouns,锅,pot,pot,20
+item_485,household,nouns,刀,knife,knife,19
+item_486,household,nouns,茶杯,teacup,cup,24
+item_487,household,nouns,灯,lamp,lamp,16
+item_488,household,nouns,钟/表,clock,clock,19
+item_489,household,nouns,电话,phone,telephone,20
+item_490,household,nouns,电扇,electric fan,fan,23
+item_491,household,nouns,电池,battery,battery,22
+item_492,household,nouns,手表,watch (object),watch (object),22
+item_493,household,nouns,收音机,radio,radio,25
+item_494,household,nouns,照相机,camera,camera,23
+item_495,household,nouns,（钢）琴,piano,piano,23
+item_496,household,nouns,录音机,voice recorder,voice recorder,25
+item_497,household,nouns,音响,speaker,stereo,28
+item_498,household,nouns,VCD机,NA,NA,28
+item_499,household,nouns,被子,NA,blanket,18
+item_500,household,nouns,枕头,pillow,pillow,20
+item_501,household,nouns,药,medicine,medicine,19
+item_502,household,nouns,梳子/栊子,comb (object),comb (object),21
+item_503,household,nouns,盆,basin,basin,19
+item_504,household,nouns,肥皂/香皂,soap,soap,20
+item_505,household,nouns,牙刷,toothbrush,toothbrush,21
+item_506,household,nouns,毛巾,towel,towel,21
+item_507,household,nouns,手纸,tissue,tissue,23
+item_508,household,nouns,画,picture,picture,20
+item_509,household,nouns,纸,paper,paper,19
+item_510,household,nouns,剪刀,scissors,scissors,22
+item_511,household,nouns,绳,rope,rope,22
+item_512,household,nouns,眼镜,glasses,glasses,21
+item_513,household,nouns,报纸,newspaper,newspaper,21
+item_514,household,nouns,钥匙,keys,key,21
+item_515,household,nouns,钱,money,money,20
+item_516,household,nouns,包,bag,bag,17
+item_517,household,nouns,书包,bag,bag,23
+item_518,household,nouns,钱包,purse,purse,24
+item_519,household,nouns,口袋,pocket,pocket,24
+item_520,household,nouns,扇子,fan,fan,23
+item_521,household,nouns,（抹）布,cloth,cloth,22
+item_522,household,nouns,盒子,box,box,22
+item_523,household,nouns,篮子,basket,basket,24
+item_524,household,nouns,桶,bucket,bucket,21
+item_525,household,nouns,刷子,brush,brush (object),22
+item_526,household,nouns,笤帚,broom,broom,23
+item_527,household,nouns,托把/墩布,rag,rag,23
+item_528,household,nouns,垃圾,trash,trash,23
+item_529,household,nouns,簸箕,dustpan,dustpan,25
+item_530,household,nouns,锤子,hammer,hammer,24
+item_531,household,nouns,钉子,nail,nail (object),24
+item_532,household,nouns,木头,wood,wood,24
+item_533,household,nouns,东西,thing,thing,23
+item_534,toys,nouns,球,ball,ball,16
+item_535,toys,nouns,书,book,book,17
+item_536,toys,nouns,小娃娃,doll,doll,18
+item_537,toys,nouns,笔,pen,pen,18
+item_538,toys,nouns,汽球,balloon,balloon,20
+item_539,toys,nouns,枪,gun,gun,20
+item_540,toys,nouns,积木,block,blocks,22
+item_541,toys,nouns,玩具,toy (object),toy (object),22
+item_542,toys,nouns,故事,story,story,22
+item_543,toys,nouns,风筝,kite,kite,23
+item_544,toys,nouns,歌,song,song,20
+item_545,toys,nouns,铃铛,bell,bell,24
+item_546,toys,nouns,铅笔,pencil,pencil,24
+item_547,toys,nouns,蜡笔,crayon,crayon,27
+item_548,toys,nouns,车轮/轱辘,wheel,wheel,23
+item_549,toys,nouns,游戏,game,game,24
+item_550,toys,nouns,棋子,chess,board game,25
+item_551,toys,nouns,礼物,present,present,27
+item_552,clothing,nouns,帽子,hat,hat,16
+item_553,clothing,nouns,手套,gloves,glove,21
+item_554,clothing,nouns,围巾,scarf,scarf,22
+item_555,clothing,nouns,手绢,handkerchief,handkerchief,21
+item_556,clothing,nouns,围嘴,bib,bib,24
+item_557,clothing,nouns,项链,necklace,necklace,25
+item_558,clothing,nouns,衣服/衣裳,clothes,clothes,20
+item_559,clothing,nouns,大衣/外套,coat,coat,25
+item_560,clothing,nouns,棉袄,jacket,jacket,24
+item_561,clothing,nouns,夹克,jacket,jacket,30
+item_562,clothing,nouns,毛衣,sweater,sweater,22
+item_563,clothing,nouns,背心,vest,vest,23
+item_564,clothing,nouns,上衣,shirt,shirt,25
+item_565,clothing,nouns,（裤）兜,pocket,pocket,19
+item_566,clothing,nouns,扣子,button,button,19
+item_567,clothing,nouns,拉锁,zipper,zipper,23
+item_568,clothing,nouns,袖子,sleeve,sleeve,22
+item_569,clothing,nouns,裤子,pants,pants,20
+item_570,clothing,nouns,毛裤,pants,pants,24
+item_571,clothing,nouns,裤衩,underpants,underpants,25
+item_572,clothing,nouns,裙子,skirt,skirt,24
+item_573,clothing,nouns,皮带,belt,belt,24
+item_574,clothing,nouns,袜子,sock,sock,18
+item_575,clothing,nouns,鞋,shoe,shoe,17
+item_576,clothing,nouns,拖鞋,slipper,slipper,22
+item_577,clothing,nouns,皮鞋,shoe,shoe,23
+item_578,clothing,nouns,凉鞋,sandals,sandal,25
+item_579,clothing,nouns,球鞋/旅游鞋,sneaker,sneaker,28
+item_580,furniture_rooms,nouns,楼梯,stairs,stairs,22
+item_581,furniture_rooms,nouns,门,door,door,17
+item_582,furniture_rooms,nouns,窗户,window,window,21
+item_583,furniture_rooms,nouns,床,bed,bed,19
+item_584,furniture_rooms,nouns,桌子/饭桌,table,table,20
+item_585,furniture_rooms,nouns,尿盆,potty,potty,22
+item_586,furniture_rooms,nouns,镜子,mirror,mirror,21
+item_587,furniture_rooms,nouns,凳子,stool,stool,20
+item_588,furniture_rooms,nouns,椅子,chair,chair,22
+item_589,furniture_rooms,nouns,沙发,couch,couch,22
+item_590,furniture_rooms,nouns,茶几,stairs,stairs,27
+item_591,furniture_rooms,nouns,电视,tv,tv,20
+item_592,furniture_rooms,nouns,冰箱,refrigerator,refrigerator,21
+item_593,furniture_rooms,nouns,炉子/灶,stove,stove,25
+item_594,furniture_rooms,nouns,洗衣机,washing machine,washing machine,23
+item_595,furniture_rooms,nouns,屋子,house,house,22
+item_596,furniture_rooms,nouns,柜子,closet,closet,23
+item_597,furniture_rooms,nouns,抽屉,drawer,drawer,23
+item_598,furniture_rooms,nouns,澡盆,bathtub,bathtub,23
+item_599,furniture_rooms,nouns,厕所,bathroom,bathroom,22
+item_600,furniture_rooms,nouns,水池子,puddle,puddle,25
+item_601,furniture_rooms,nouns,水龙头/水管,faucet,faucet,24
+item_602,furniture_rooms,nouns,厨房,kitchen,kitchen,23
+item_603,furniture_rooms,nouns,暖水瓶/暖壶,thermos,bottle,24
+item_604,furniture_rooms,nouns,煤气,gas,gas,25
+item_605,furniture_rooms,nouns,空调,air conditioner,air conditioner,24
+item_606,furniture_rooms,nouns,微波炉,microwave,microwave,27
+item_607,furniture_rooms,nouns,阳台,balcony,balcony,24
+item_608,furniture_rooms,nouns,电梯,elevator,elevator,24
+item_609,outside,nouns,花,flower,flower,17
+item_610,outside,nouns,树,tree,tree,19
+item_611,outside,nouns,叶子/树叶,leaf,leaf,21
+item_612,outside,nouns,树枝,branch,branch,25
+item_613,outside,nouns,草,grass,grass,20
+item_614,outside,nouns,土,earth,soil,20
+item_615,outside,nouns,水,water (not beverage),water (not beverage),19
+item_616,outside,nouns,雨,rain,rain,20
+item_617,outside,nouns,雪,snow,snow,21
+item_618,outside,nouns,风,wind,wind,20
+item_619,outside,nouns,石头,stone,stone,21
+item_620,outside,nouns,山,mountain,mountain,22
+item_621,outside,nouns,棍子,stick,stick,22
+item_622,outside,nouns,沙子,sand,sand,22
+item_623,outside,nouns,铲子,shovel,shovel,22
+item_624,outside,nouns,梯子,ladder,ladder,25
+item_625,outside,nouns,滑梯,slide (object),slide (object),23
+item_626,outside,nouns,转椅,NA,NA,25
+item_627,outside,nouns,秋千,swing (object),swing (object),25
+item_628,outside,nouns,蹦蹦床,trampoline,trampoline,25
+item_629,outside,nouns,太阳,sun,sun,21
+item_630,outside,nouns,月亮,moon,moon,21
+item_631,outside,nouns,星星,star,star,21
+item_632,outside,nouns,天（空）,sky,sky,21
+item_633,outside,nouns,云彩,cloud,cloud,25
+item_634,outside,nouns,房顶,roof,roof,26
+item_635,outside,nouns,街（道）/大街,street,street,19
+item_636,outside,nouns,路,road,road,21
+item_637,outside,nouns,红绿灯,traffic light,traffic light,24
+item_638,outside,nouns,（雨）伞,umbrella,umbrella,21
+item_639,outside,nouns,雪人,snowman,snowman,25
+item_640,outside,nouns,游泳池,pool,pool,29
+item_641,vehicles,nouns,车,car,car,16
+item_642,vehicles,nouns,飞机,airplane,airplane,21
+item_643,vehicles,nouns,火车,train,train,22
+item_644,vehicles,nouns,船,boat,boat,21
+item_645,vehicles,nouns,摩托车,motorcycle,motorcycle,23
+item_646,vehicles,nouns,小轿车,car,car,24
+item_647,vehicles,nouns,自行车,bicycle,bicycle,22
+item_648,vehicles,nouns,公共汽车,bus,bus,24
+item_649,vehicles,nouns,卡车,truck,truck,24
+item_650,vehicles,nouns,出租车/的,taxi,taxi,24
+item_651,vehicles,nouns,老吊车,crane,crane,25
+item_652,vehicles,nouns,三轮车,tricycle,tricycle,24
+item_653,vehicles,nouns,吉普车,jeep,jeep,26
+item_654,vehicles,nouns,救护车,ambulance,ambulance,27
+item_655,places,other,家,home,home,17
+item_656,places,other,外头/外面/外外,outside,outside,19
+item_657,places,other,班儿/单位,work (place),work (place),18
+item_658,places,other,房子,house,house,22
+item_659,places,other,楼房,building,building,23
+item_660,places,other,公园,park,park,22
+item_661,places,other,动物园,zoo,zoo,23
+item_662,places,other,花园,garden,garden,24
+item_663,places,other,麦当劳/肯德基,McDonald's / KFC,NA,23
+item_664,places,other,医院,hospital,hospital,23
+item_665,places,other,商店,store,store,24
+item_666,places,other,幼儿园/托儿所,kindergarten,kindergarten,24
+item_667,places,other,学校,school,school,24
+item_668,places,other,天安门,Tiananmen,NA,25
+item_669,places,other,中国,China,NA,27
+item_670,places,other,游乐园,amusement park,amusement park,27
+item_671,places,other,超市,store,store,26
+item_672,directions,function_words,这边/这儿,here,here,19
+item_673,directions,function_words,那边/那儿,there,there,20
+item_674,directions,function_words,上（面）,on,above,20
+item_675,directions,function_words,下（面）,below,below,20
+item_676,directions,function_words,外面,outside,outside,21
+item_677,directions,function_words,里面,inside,inside,23
+item_678,directions,function_words,在,at,at,21
+item_679,directions,function_words,底下,under,under,23
+item_680,directions,function_words,前面,front,front,23
+item_681,directions,function_words,后面,behind,behind,23
+item_682,directions,function_words,中间,middle,middle,26
+item_683,directions,function_words,旁边,beside,beside,25
+item_684,directions,function_words,挨着,next to,next to,24
+item_685,directions,function_words,一边,at a side,NA,25
+item_686,directions,function_words,边上,at a side,NA,25
+item_687,directions,function_words,跟,with,with,22
+item_688,directions,function_words,到,until,until,22
+item_689,directions,function_words,往,towards,towards,25
+item_690,directions,function_words,朝,towards,towards,28
+item_691,directions,function_words,向,towards,towards,26
+item_692,directions,function_words,上（哪儿去）,towards,towards,22
+item_693,quantifiers,function_words,一,one,one,14
+item_694,quantifiers,function_words,二,two,two,18
+item_695,quantifiers,function_words,三,three,three,20
+item_696,quantifiers,function_words,一样,same,same,23
+item_697,quantifiers,function_words,多,many,many,20
+item_698,quantifiers,function_words,有的,some,some,26
+item_699,quantifiers,function_words,全部,all,all,28
+item_700,quantifiers,function_words,所有,all,all,NA
+item_701,quantifiers,function_words,另外,another,another,NA
+item_702,pronouns,function_words,我,I,1SG,19
+item_703,pronouns,function_words,我的,my,1SG.POSS,21
+item_704,pronouns,function_words,自己,self,REFL,24
+item_705,pronouns,function_words,自己的,mine,REFL.POSS,26
+item_706,pronouns,function_words,你,you,2SG,21
+item_707,pronouns,function_words,你的,your,2SG.POSS,23
+item_708,pronouns,function_words,他（她、它）,he/she,3SG,23
+item_709,pronouns,function_words,他的,his,3SG.POSS,24
+item_710,pronouns,function_words,这个,this,this,22
+item_711,pronouns,function_words,那个,that,that,23
+item_712,pronouns,function_words,那些,those,those,28
+item_713,pronouns,function_words,这些,these,these,27
+item_714,pronouns,function_words,别的,other,other,27
+item_715,pronouns,function_words,我们,we,1PL,25
+item_716,pronouns,function_words,咱们,we,1PL,27
+item_717,pronouns,function_words,你们,you,2PL,26
+item_718,pronouns,function_words,他们,them,3PL,27
+item_719,pronouns,function_words,我们的,our,1PL.POSS,27
+item_720,pronouns,function_words,咱们的,our,1PL.POSS,29
+item_721,pronouns,function_words,你们的,your,2PL.POSS,28
+item_722,pronouns,function_words,他们的,their,3PL.POSS,29
+item_723,pronouns,function_words,人家,other people,other,26
+item_724,pronouns,function_words,其它,other,other,NA
+item_725,pronouns,function_words,别人,other people,other,25
+item_726,classifiers,function_words,个,NA,NA,21
+item_727,classifiers,function_words,口,NA,NA,22
+item_728,classifiers,function_words,只,NA,NA,23
+item_729,classifiers,function_words,辆,NA,NA,24
+item_730,classifiers,function_words,张,NA,NA,24
+item_731,classifiers,function_words,本,NA,NA,23
+item_732,classifiers,function_words,条,NA,NA,25
+item_733,classifiers,function_words,点,NA,NA,22
+item_734,classifiers,function_words,块,NA,NA,23
+item_735,classifiers,function_words,件,NA,NA,25
+item_736,classifiers,function_words,次,NA,NA,26
+item_737,classifiers,function_words,步,NA,NA,24
+item_738,classifiers,function_words,层,NA,NA,25
+item_739,classifiers,function_words,堆,NA,NA,26
+item_740,classifiers,function_words,粒,NA,NA,28
+item_741,classifiers,function_words,头,NA,NA,27
+item_742,classifiers,function_words,匹,NA,NA,30
+item_743,classifiers,function_words,位,NA,NA,30
+item_744,classifiers,function_words,眼,NA,NA,27
+item_745,classifiers,function_words,些,NA,NA,27
+item_746,question_words,function_words,干嘛？,what's up,NA,21
+item_747,question_words,function_words,什么,what,what,23
+item_748,question_words,function_words,谁,who,who,22
+item_749,question_words,function_words,在哪里/哪儿呢？,where,where (question),23
+item_750,question_words,function_words,几点,when (question),when (question),25
+item_751,question_words,function_words,哪个,which (question),which (question),25
+item_752,question_words,function_words,为什么,why,why,26
+item_753,question_words,function_words,怎么,how,how,26
+item_754,question_words,function_words,几个,how many,how many,25
+item_755,question_words,function_words,多少,how much,how much,26
+item_756,question_words,function_words,（行、好）吗？,is that okay?,is that okay?,23
+item_757,question_words,function_words,（还有）呢？,anything else?,NA,24
+item_758,final_particles,function_words,啊/呀,a,a,20
+item_759,final_particles,function_words,了,NA,NA,21
+item_760,final_particles,function_words,啦,NA,NA,22
+item_761,final_particles,function_words,嘛,NA,NA,22
+item_762,final_particles,function_words,呢,NA,NA,24
+item_763,final_particles,function_words,噢,NA,NA,23
+item_764,time_words,other,早上,morning,morning,24
+item_765,time_words,other,晚上,night,night,24
+item_766,time_words,other,今天,today,today,25
+item_767,time_words,other,明天,tomorrow,tomorrow,26
+item_768,time_words,other,昨天,yesterday,yesterday,28
+item_769,time_words,other,后天,NA,NA,NA
+item_770,time_words,other,天,day,day,24
+item_771,time_words,other,先,before,before,25
+item_772,time_words,other,已经,already,already,29
+item_773,time_words,other,以前,before,before,29
+item_774,time_words,other,以后,after,after,29
+item_775,time_words,other,晚（一点）,later,later,26
+item_776,time_words,other,现在,now,now,26
+item_777,time_words,other,早（一点）,early,early,25
+item_778,time_words,other,时间,time,time,29
+item_779,helping_verbs,function_words,爱（听）,love,love,22
+item_780,helping_verbs,function_words,能,can (auxiliary),can (auxiliary),23
+item_781,helping_verbs,function_words,会,can (auxiliary),can (auxiliary),21
+item_782,helping_verbs,function_words,可以（做）,ok,ok,25
+item_783,helping_verbs,function_words,肯,NA,NA,NA
+item_784,helping_verbs,function_words,想,think,think,22
+item_785,helping_verbs,function_words,不许,cannot,cannot,25
+item_786,helping_verbs,function_words,愿意,NA,NA,25
+item_787,helping_verbs,function_words,该（走啦！）/应该,should,should,25
+item_788,helping_verbs,function_words,得（你得去）,must,must,29
+item_789,helping_verbs,function_words,把（XX放…）,NA,NA,24
+item_790,helping_verbs,function_words,舍不得,NA,NA,30
+item_791,connecting_words,function_words,和,with,with,23
+item_792,connecting_words,function_words,跟,follow,follow,23
+item_793,connecting_words,function_words,因为,because,because,29
+item_794,connecting_words,function_words,就,so,so,25
+item_795,connecting_words,function_words,可是,but,but,NA
+item_796,connecting_words,function_words,如果,if,if,NA
+item_797,connecting_words,function_words,要是,if,if,NA
+item_798,connecting_words,function_words,所以,so,so,NA
+item_799,connecting_words,function_words,那么,so,so,NA
